@@ -47,7 +47,7 @@ int main(void)
 {
 
 	 if (wiringPiI2CSetup(devId)){
-		 cout << "Initialisation error";
+		 cout << errno;
 	 }
 
 }
