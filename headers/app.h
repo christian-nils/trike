@@ -1,5 +1,5 @@
 /*****************************************************************************
-* © 2014 Microchip Technology Inc. and its subsidiaries.
+* Â© 2014 Microchip Technology Inc. and its subsidiaries.
 * You may use this software and any derivatives exclusively with
 * Microchip products.
 * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".
@@ -57,10 +57,7 @@ extern "C" {
 #include <float.h>
 
 #include <i2c.h>
-#include <p24FJ128GA010.h>
 #include <timer.h>
-#include <xc.h>
-#include <uart.h>
 
 typedef unsigned char UINT8;        // 8-bit variables
 typedef unsigned char BOOL;
@@ -71,14 +68,9 @@ typedef unsigned long UINT32;
 #define FALSE 0
 
 //  Peripheral Include Files
-#include "System.h"
-#include "lcd.h"
-#include "interrupts.h"
 #include "VREGS.h"
-#include "i2cIO.h"
 #include "sf.h"
-#include "flashupdate.h"
-#include "err.h"
+#include <err.h>
 
 //****************************************************************************
 //****************************************************************************

@@ -1,5 +1,5 @@
 /*****************************************************************************
-* © 2014 Microchip Technology Inc. and its subsidiaries.
+* Â© 2014 Microchip Technology Inc. and its subsidiaries.
 * You may use this software and any derivatives exclusively with
 * Microchip products.
 * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".
@@ -57,33 +57,12 @@
 
 #include "..\headers\app.h"
 
-//*****************************************************************************
-//*****************************************************************************
-//  Section : System Configuration Settings
-//*****************************************************************************
-//*****************************************************************************
-
-_CONFIG1(JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx2)
-_CONFIG2(FCKSM_CSECMD & OSCIOFNC_OFF & POSCMOD_XT & FNOSC_PRI)
 
 //*****************************************************************************
 //*****************************************************************************
 //  Section : File scope variables and functions
 //*****************************************************************************
 //*****************************************************************************
-
-extern volatile UINT8 PB_EVT;                                       // push button event
-extern UINT8 ucDWNLD_IDX;
-extern UINT16 seq_number;
-extern UINT8 HOST_DWNLOAD_BUF[];
-extern BOOL process_packet;                                         // UART packet processing pending flag
-extern BOOL img_wr_done;
-UINT8 FLASH_BUF[BUF_150] = {0};
-
-
-double prev_dat[4];                                                 // Used to hold previous data readings to preclude redundant data output
-char COM_title_buf[] = "MICROCHIP Motion Module Demo: MM7150 + Explorer 16 Board v1.3.3\n\r\0";
-UINT8 display_menu(void);                                           // Displays and handles menu selections
 
 //*****************************************************************************
 //*****************************************************************************
@@ -107,14 +86,14 @@ int main(void)
     char err_buf[32];
 
 
-    sys_init();                                                     // initialize Explorer 16 environment (LEDs, LCDs, push buttons, UART2)     
-    u2out(COM_title_buf);                                           // output title string to UART2
+//    sys_init();                                                     // initialize Explorer 16 environment (LEDs, LCDs, push buttons, UART2)     
+//    u2out(COM_title_buf);                                           // output title string to UART2
     
     if ( (ucRetStat = VREG_init()) )                                // initialize VREG functions (NOTE: if the SF board does not initialize, end the program)
         error_handler("Vini",0,ucRetStat);                          // error display
 
     
-    while(1)                                                        // main demo loop begins here (does NOT exit)
+   /* while(1)                                                        // main demo loop begins here (does NOT exit)
     {
         switch (ucSens_slct = display_menu())                       // display the menu and operate on its return value
         {   
@@ -958,108 +937,6 @@ int main(void)
 			default: break;
         }
     }
-    return (EXIT_SUCCESS);
-}
-
-/** display_menu
-* @note	Sensor type selection menu displayed to LCD and UART2 
-* @param 
-* @return curr_row pointer value for menu item selected 
-*/ 
-UINT8 display_menu(void)
-{
-    int iCurr_row = 1;
-    int iPrev_row = iCurr_row - 1;
-    UINT8 ucButton;
-    char menu[MENU_ITEMS][MENU_STR_LEN] = { "MM7150 Demo v133\n\r\0", 
-                                            "  Select mode:  \n\r\0",
-                                            "  ACCELEROMETER \n\r\0",
-                                            "  GYROMETER     \n\r\0",
-                                            "  COMPASS       \n\r\0",
-                                            "  ORIENTATION   \n\r\0",
-                                            "  INCLINOMETER  \n\r\0",
-                                            "  RAW ACCELEROM \n\r\0",
-                                            "  RAW MAGNETO   \n\r\0",
-                                            "  RAW GYRO      \n\r\0",
-                                            "  Sleep         \n\r\0",
-                                            "  Wake          \n\r\0",
-                                            "  Flash Update  \n\r\0",
-											"  Calibration   \n\r\0",
-											"  FlshCnfgUpdate\n\r\0",
-                                            "                \n\r\0"};
-    
-	
-    while(1)                                                        //menu loop
-    {
-        LCD_ClearScreen();                                          // Clear LCD screen
-        LCD_PutString(menu[iPrev_row], 16);                         // output string to 1st row of LCD
-        LCD_PutString(menu[iCurr_row], 16);                         // output string to 2nd row of LCD
-        u2out(menu[iCurr_row]);                                     // output strings to COM port thru UART2
-
-        while(1)                                                    // wait for a button to be pressed
-        {                                                           // NOTE: S5 has no interrupt associated with it so this "while loop" is necessary
- 
-            if (SW_S5_LOW)
-                PB_EVT = _SW_S5_SLCT;                               // If the select button (which has no interrupt) is brought low (pressed)
-
-            ucButton = isPressed();                                 //check for debounced button press
-            
-            if (ucButton != 0xFF )                                  // if any button pressed
-                break;	
-
-        }
-
-        if ((ucButton == _SW_S5_SLCT) && (iCurr_row >= MIN_MENU_SLCT)) // selection has been made so break the menu loop
-            break;
-
-        if (ucButton == _SW_S6_DWN)                                 // If the down button was pressed
-        {
-            iPrev_row++;                                            //down button increments the row pointers
-            iCurr_row++;
-
-            if (iPrev_row >= MIN_MENU_SLCT)                         // Clear the selection symbol from the previous menu selection
-                menu[iPrev_row][0] = ' ';
-
-            if (iCurr_row >= MIN_MENU_SLCT && iCurr_row <= MAX_MENU_SLCT) // Set a selection indicator for the next item in the menu
-                menu[iCurr_row][0] = '>';
-            if (iPrev_row == MAX_MENU_SLCT)
-                menu[iPrev_row][0] = '>';
-            
-            if (iPrev_row == MAX_LINE_NUM)                          // If we are at the end of the menu, loop back to the beginning
-            {
-                iPrev_row = 0;
-                iCurr_row = iPrev_row + 1;
-            }
-
-        }                                                           //end of DOWN button condition
-
-        if (ucButton == _SW_S3_UP)                                  // If the UP button was pressed
-        {
-            iPrev_row--;                                            //up button decrements the row pointers
-            iCurr_row--;
-
-            if (iPrev_row == -1)	                            // If we are at the beggning of the menu, loop to the end of the menu
-            {
-                iPrev_row = MAX_MENU_SLCT - 1;                      //adjust row pointers
-                iCurr_row = MAX_MENU_SLCT;
-            }
-
-            if (iPrev_row >= MIN_MENU_SLCT)                         // Clear the selection symbol from the previous menu selection
-                menu[iCurr_row+1][0] = ' ';
-            
-            if(iCurr_row >= MIN_MENU_SLCT && iCurr_row <=MAX_MENU_SLCT)
-                menu[iCurr_row][0] = '>';
-        }                                                           //end of UP button condition
-        
-        if (ucButton == _SW_S4_RST)                                 //Reset-return to main menu button pressed
-        {
-            ucButton = 0xFF;                                        //nullify the button press
-            iCurr_row = 1;                                          //reset row parameters to initial values
-            iPrev_row = iCurr_row - 1;
-        }	
-
-    }                                                               //end of menu loop
-        
-    return ((UINT8)iCurr_row);                                      //return pointer value for the menu item selected
+    return (EXIT_SUCCESS);*/
 }
 
