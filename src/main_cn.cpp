@@ -41,7 +41,7 @@
 * @return error status
 */ 
 
-int devId = 40
+int devId = 40;
 
 int main(void) 
 {
