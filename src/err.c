@@ -1,5 +1,5 @@
 /*****************************************************************************
-* © 2014 Microchip Technology Inc. and its subsidiaries.
+* Â© 2014 Microchip Technology Inc. and its subsidiaries.
 * You may use this software and any derivatives exclusively with
 * Microchip products.
 * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".
@@ -40,7 +40,7 @@
 //****************************************************************************
 //****************************************************************************
 
-#include "..\headers\app.h"
+#include "../headers/app.h"
 
 //*****************************************************************************
 //*****************************************************************************
