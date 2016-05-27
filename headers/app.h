@@ -56,8 +56,7 @@ extern "C" {
 #include <stdbool.h>
 #include <float.h>
 
-#include <i2c.h>
-#include <timer.h>
+#include <wiringPiI2C.h>
 
 typedef unsigned char UINT8;        // 8-bit variables
 typedef unsigned char BOOL;
@@ -68,9 +67,9 @@ typedef unsigned long UINT32;
 #define FALSE 0
 
 //  Peripheral Include Files
-#include "VREGS.h"
+#include "vregs.h"
 #include "sf.h"
-#include <err.h>
+#include "err.h"
 
 //****************************************************************************
 //****************************************************************************
