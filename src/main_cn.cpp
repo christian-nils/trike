@@ -45,9 +45,8 @@ int devId = 40;
 
 int main(void) 
 {
-
-	 if (wiringPiI2CSetup(devId)){
-		 cout << errno;
-	 }
+	int fd;
+	fd = wiringPiI2CSetup(devId);
+	cout << "Init result: "<< fd << endl;
 
 }
