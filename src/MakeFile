@@ -1,5 +1,5 @@
 LIBS  = -lwiringPi
-CFLAGS = -w
+CFLAGS = -w 
 
 SRC=$(wildcard *.c)
 
