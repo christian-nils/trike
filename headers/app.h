@@ -49,7 +49,7 @@ extern "C" {
 #define __GENERIC_TYPE_DEFS_H_
 
 #include <stdio.h>
-#include <iostream>
+//#include <iostream>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>

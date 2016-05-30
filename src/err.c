@@ -70,7 +70,7 @@ void error_handler( char *str, UINT8 offset, UINT8 errval)
 
     //output to uart
     sprintf ( err_buf, "***Error in function: %s:%02X errval=0x%X*** \n\r", str, offset, errval);
-	cout << err_buf;
+	printf("%s", err_buf);
 //    u2out(err_buf);
 //
 //        
@@ -129,7 +129,7 @@ void i2cIO_error (UINT8 ucCode)
 //    StopI2C1();
 
     sprintf(err_buf, "***i2cIO_error code = 0x%X\n\r", ucCode);
-	cout << err_buf;
+	printf("%s", err_buf);
 //    u2out(err_buf);
 //  
 //    //output to LCD screen
