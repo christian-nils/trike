@@ -32,6 +32,8 @@ typedef struct HID_DESCRIPTOR_TABLE                                 // Struct to
 #define POWER_CMD_MSB           0x08                                // POWER command bytes
 #define POWER_CMD_LSB           0x00
 #define BUF_40                  40                                  //temp buffer size = 40 bytes
+#define BYTE_SHIFT              8
+
 #define SLAVE_ADDR 0x40
 extern int SLAVE_FD;
 
