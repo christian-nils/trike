@@ -138,6 +138,8 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
    
 //    IdleI2C1();                                                     // Ensure module is idle
 //    I2C1CONbits.SEN = 1;                                            // Send start bit TO slave
+	printf("%i", SLAVE_FD);
+	wiringPiI2CWrite(SLAVE_FD, ucData_wr[i]);
 //    MasterWaitForIntrI2C1();                                        // Wait for Master interrupt request and then clear interrupt Flag.
 
     switch(ucCmd)
