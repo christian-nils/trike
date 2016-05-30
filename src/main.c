@@ -85,8 +85,14 @@ int main(void)
     UINT16 wRMWdata;                                                // temporary data for Read-Modify-Write VREG data
     char err_buf[32];
 
-	if (sys_init())
+	if (sys_init()){
 		ucRetStat = VREG_init();
+		printf("SUCCESS!\n");	
+	}
+	else {
+		perror();
+		return errno;
+		}
 //    if ( (ucRetStat = VREG_init()) )                                // initialize VREG functions (NOTE: if the SF board does not initialize, end the program)
 //        error_handler("Vini",0,ucRetStat);                          // error display
 
