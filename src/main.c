@@ -937,11 +937,3 @@ int main(void)
     }
     return (EXIT_SUCCESS);*/
 }
-
-int sys_init(void){	
-	int SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
-	if (SLAVE_FD<0) // Error
-		return errno;
-		
-	return SUCCESS;
-}
