@@ -174,56 +174,56 @@ UINT8 hid_i2c_cmd_process(UINT8 *ucCmdDatbuf, UINT8 ucCmd_req, UINT8 ucReport_id
     switch(ucCmd_req)
     {
         
-        case RESET_DEV_CMD:                                         //HID Reset command                      
-            ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table                    
-            ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);       
-            ucTx_data[2] = RESET_CMD_LSB;                           //HID Reset command opcode low byte              
-            ucTx_data[3] = RESET_CMD_MSB;                           //HID Reset command opcode high byte
-
-            // send the reset command to SSC7150
-            ucRetStat = i2c_cmd_WrRd (WRITE,                        //WRITE command packet to SSC7150 
-                                CMD_LEN,                            //num of cmd bytes 
-                                ucTx_data,                          //cmd buf 
-                                0,                                  //num of bytes to read             
-                                ucCmdDatbuf,                        //recv buf
-                                FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
-            
-            if (ucRetStat != SUCCESS)
-                return RESET_FAIL;
-
-            TIMER_1MS_FLG = 0;                                      // Prepare timer1 for counting
-            usTimeout = TIMEOUT_5SEC;                               // 5 sec (as per HID spec) timeout for reset command 
-            while (usTimeout)                                       // wait up to API spec timeout to respond with EC_DATA avail interrupt   
-            {    
-                if (EC_DATA_AVAIL)                                  // EC interrupt asserted (data is available)
-                    break; 
-					
-                if (TIMER_1MS_FLG)
-                { 
-                    TIMER_1MS_FLG = 0;
-                    usTimeout--;                                    // 1 msec expired, reduce counter
-                }
-            }
-
-            if (!usTimeout) 
-                return RESET_FAIL;                                  // timeout occured without device responding with interrupt
-                
-            ucRetStat = i2c_cmd_WrRd (READ,                         // EC_DATA_AVAIL flag was set indicating SSC7150 has data available to be read in response to the RESET CMD
-                                    0,                              //num of cmd bytes
-                                    ucTx_data,                      //cmd buf
-                                    2,                              //num of bytes to read
-                                    ucCmdDatbuf,                    //recv buf 
-                                    FALSE);                         //flag indicating that we specified the number of bytes to read explicitly
-                
-            if (ucRetStat != SUCCESS)
-                return RESET_FAIL; 
-            
-            if (ucCmdDatbuf[0] != 0 && ucCmdDatbuf[1] != 0)         // expect 1st two bytes of data packet from SSC7150 in response to RESET command to be "00 00"
-                return RESET_FAIL;                                  // invalid data found
- 
-            VREGS.SHC.reset = VREG_RESET_SUCCESS;                   // Clear the reset VREG to indicate successful 
-                   
-            break;
+//        case RESET_DEV_CMD:                                         //HID Reset command                      
+//            ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table                    
+//            ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);       
+//            ucTx_data[2] = RESET_CMD_LSB;                           //HID Reset command opcode low byte              
+//            ucTx_data[3] = RESET_CMD_MSB;                           //HID Reset command opcode high byte
+//
+//            // send the reset command to SSC7150
+//            ucRetStat = i2c_cmd_WrRd (WRITE,                        //WRITE command packet to SSC7150 
+//                                CMD_LEN,                            //num of cmd bytes 
+//                                ucTx_data,                          //cmd buf 
+//                                0,                                  //num of bytes to read             
+//                                ucCmdDatbuf,                        //recv buf
+//                                FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
+//            
+//            if (ucRetStat != SUCCESS)
+//                return RESET_FAIL;
+//
+//            TIMER_1MS_FLG = 0;                                      // Prepare timer1 for counting
+//            usTimeout = TIMEOUT_5SEC;                               // 5 sec (as per HID spec) timeout for reset command 
+//            while (usTimeout)                                       // wait up to API spec timeout to respond with EC_DATA avail interrupt   
+//            {    
+//                if (EC_DATA_AVAIL)                                  // EC interrupt asserted (data is available)
+//                    break; 
+//					
+//                if (TIMER_1MS_FLG)
+//                { 
+//                    TIMER_1MS_FLG = 0;
+//                    usTimeout--;                                    // 1 msec expired, reduce counter
+//                }
+//            }
+//
+//            if (!usTimeout) 
+//                return RESET_FAIL;                                  // timeout occured without device responding with interrupt
+//                
+//            ucRetStat = i2c_cmd_WrRd (READ,                         // EC_DATA_AVAIL flag was set indicating SSC7150 has data available to be read in response to the RESET CMD
+//                                    0,                              //num of cmd bytes
+//                                    ucTx_data,                      //cmd buf
+//                                    2,                              //num of bytes to read
+//                                    ucCmdDatbuf,                    //recv buf 
+//                                    FALSE);                         //flag indicating that we specified the number of bytes to read explicitly
+//                
+//            if (ucRetStat != SUCCESS)
+//                return RESET_FAIL; 
+//            
+//            if (ucCmdDatbuf[0] != 0 && ucCmdDatbuf[1] != 0)         // expect 1st two bytes of data packet from SSC7150 in response to RESET command to be "00 00"
+//                return RESET_FAIL;                                  // invalid data found
+// 
+//            VREGS.SHC.reset = VREG_RESET_SUCCESS;                   // Clear the reset VREG to indicate successful 
+//                   
+//            break;
 
 
         case POWER_ON:      
@@ -245,96 +245,96 @@ UINT8 hid_i2c_cmd_process(UINT8 *ucCmdDatbuf, UINT8 ucCmd_req, UINT8 ucReport_id
             break;
 
 
-        case SLEEP:         
-
-            ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table
-            ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);            
-            ucTx_data[2] = SLEEP_ON_LSB;                            //HID Power command opcode low byte for Device SLEEP
-            ucTx_data[3] = POWER_CMD_MSB;                           //HID Power command opcode high byte
-
-            ucRetStat = i2c_cmd_WrRd (WRITE,                        // Issue sleep command to SSC7150
-                                CMD_LEN,                            //num of cmd bytes
-                                ucTx_data,                          //cmd buf 
-                                0,                                  //num of bytes to read
-                                ucCmdDatbuf,                        //recv buf
-                                FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
-
-            if (ucRetStat != SUCCESS)
-                return SLEEP_CMD_FAIL;                              // command failed         
-            
-            break;
-
-        case HID_GET_RPT_INPT:
-			
-            ucCmdDatbuf[0] = ucReport_id;                           //the HOST_SF_LIB_HID_Get_Report expects the sensor id in byte[0] of passed buffer
-			
-            if ( HOST_SF_LIB_HID_Get_Report(GET_RRT_INPT, ucCmdDatbuf, 0) )
-                return HID_GET_RPT_FEAT_FAIL;                       // command failed
-			 
-            break;
-
-
-        case HID_GET_RPT_FEAT:
-
-            ucCmdDatbuf[0] = ucReport_id;                           //the HOST_SF_LIB_HID_Get_Report expects the sensor id in byte[0] of passed buffer
-			
-            if ( HOST_SF_LIB_HID_Get_Report(GET_RPT_FEAT, ucCmdDatbuf, 0) )
-                return HID_GET_RPT_FEAT_FAIL;                       // command failed
-
-            if ((ucCmdDatbuf[2] == 0) || (ucCmdDatbuf[2] > NUM_SENS) ) // check for valid ID range in feature report
-                return HID_GET_RPT_FEAT_FAIL;                       // invalid reportID
-                       
-            //now parse the parameters in returned report feature based on offsets derived earlier from parsing the HID Report Descriptor
-            for (ucSensPtr = 0; ucSensPtr < NUM_SENS; ucSensPtr++)  // traverse through the sensor list looking for matching sesnor id
-            {          
-                if (SENSOR[ucSensPtr].id == ucReport_id)
-                {        
-                    usVREGSptr = &VREGS.sensitivity.ACSEN + ucSensPtr; // Set pointer to appropriate sensitivity register (as offset from accelerometer sensitivity VREG02)
-                    
-                    //retrieve offset pointer to sensitivty parameters for this sensor device (from the Report Descriptor table). Add offset to initial pointer for the actual desired "ACSEN" data within the feature report packet and store this value in VREG register 
-                    *usVREGSptr = ( (ucCmdDatbuf[SENSOR[ucSensPtr].SensOffset + GF_SENS_OFFSET_MSB] << BYTE_SHIFT) | ucCmdDatbuf[SENSOR[ucSensPtr].SensOffset + GF_SENS_OFFSET_LSB]); // Use info about offsets to set VREGS to appropriate data
-                    
-                    usVREGSptr = &VREGS.data_rt.ACDXR + ucSensPtr;  // Set pointer to appropriate data rate register
-                    
-                    *usVREGSptr = ((ucCmdDatbuf[SENSOR[ucSensPtr].DatRtOffset + GF_DATR_OFFSET_MSB] << BYTE_SHIFT) | ucCmdDatbuf[SENSOR[ucSensPtr].DatRtOffset + GF_DATR_OFFSET_LSB]); //point to appropriate data fields within the feature report and store in VREG reg
-
-                    usVREGSptr = (UINT16 *)&(VREGS.expo.exp1);      //point to appropriate data fields within the feature report and store in VREG reg  NOTE: each exponent VREG holds 4 devices' 4bit exponent value fields
-                    if (ucSensPtr > 3)                              // sensor indexes from 4 to 7 = sensors that have unit exponents in the 2nd exponent register (VREG37)
-                        usVREGSptr++;                               // Increment ptr to VREG exponent register to be searched
-
-                    if (ucSensPtr > 7)                              // sensor indexes > 7 = sensors that have unit exponents in the 3rd exponent register (VREG38)
-                        usVREGSptr++;                               // Increment ptr to VREG exponent register to be searched
-
-                    ucTmpPtr= ucSensPtr % 4;                        // Find the appropriate offset for this sensor's unit exponent
-
-                    *usVREGSptr &= ~(0xF << (4*ucTmpPtr));          // Clear unit exponent data   
-
-                    if (SENSOR[ucSensPtr].DatExp)
-                    {
-                       *usVREGSptr |= (SENSOR[ucSensPtr].DatExp << (4*ucTmpPtr));  // Set the unit exponent data to the appropriate VREG  
-                    }
-
-                    break;              
-                }   
-            }			
-
-            break;
-     
-        case HID_SET_RPT_FEAT:
-            //for non-Vendor commands, the sensor id is NOT passed in byte[0] to 'HOST_SF_LIB_HID_Set_Report'
-            ucCmdBufMaxSize = ucCmdDatbuf[RPT_SIZE_LSB];            //get size of GetReportFeature Packet
-            
-            if ((ucCmdBufMaxSize == 0) || (ucCmdBufMaxSize == 0xFF)) //is the size reasonable?
-                return SET_FEAT_FAIL;
-					
-            if ( HOST_SF_LIB_HID_Set_Report(SET_RPT_FEAT, ucCmdDatbuf, ucCmdBufMaxSize) )
-                return SET_FEAT_FAIL;                               // command failed
-
-            break;
-
-        default:
-            break;
-    }
+//        case SLEEP:         
+//
+//            ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table
+//            ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);            
+//            ucTx_data[2] = SLEEP_ON_LSB;                            //HID Power command opcode low byte for Device SLEEP
+//            ucTx_data[3] = POWER_CMD_MSB;                           //HID Power command opcode high byte
+//
+//            ucRetStat = i2c_cmd_WrRd (WRITE,                        // Issue sleep command to SSC7150
+//                                CMD_LEN,                            //num of cmd bytes
+//                                ucTx_data,                          //cmd buf 
+//                                0,                                  //num of bytes to read
+//                                ucCmdDatbuf,                        //recv buf
+//                                FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
+//
+//            if (ucRetStat != SUCCESS)
+//                return SLEEP_CMD_FAIL;                              // command failed         
+//            
+//            break;
+//
+//        case HID_GET_RPT_INPT:
+//			
+//            ucCmdDatbuf[0] = ucReport_id;                           //the HOST_SF_LIB_HID_Get_Report expects the sensor id in byte[0] of passed buffer
+//			
+//            if ( HOST_SF_LIB_HID_Get_Report(GET_RRT_INPT, ucCmdDatbuf, 0) )
+//                return HID_GET_RPT_FEAT_FAIL;                       // command failed
+//			 
+//            break;
+//
+//
+//        case HID_GET_RPT_FEAT:
+//
+//            ucCmdDatbuf[0] = ucReport_id;                           //the HOST_SF_LIB_HID_Get_Report expects the sensor id in byte[0] of passed buffer
+//			
+//            if ( HOST_SF_LIB_HID_Get_Report(GET_RPT_FEAT, ucCmdDatbuf, 0) )
+//                return HID_GET_RPT_FEAT_FAIL;                       // command failed
+//
+//            if ((ucCmdDatbuf[2] == 0) || (ucCmdDatbuf[2] > NUM_SENS) ) // check for valid ID range in feature report
+//                return HID_GET_RPT_FEAT_FAIL;                       // invalid reportID
+//                       
+//            //now parse the parameters in returned report feature based on offsets derived earlier from parsing the HID Report Descriptor
+//            for (ucSensPtr = 0; ucSensPtr < NUM_SENS; ucSensPtr++)  // traverse through the sensor list looking for matching sesnor id
+//            {          
+//                if (SENSOR[ucSensPtr].id == ucReport_id)
+//                {        
+//                    usVREGSptr = &VREGS.sensitivity.ACSEN + ucSensPtr; // Set pointer to appropriate sensitivity register (as offset from accelerometer sensitivity VREG02)
+//                    
+//                    //retrieve offset pointer to sensitivty parameters for this sensor device (from the Report Descriptor table). Add offset to initial pointer for the actual desired "ACSEN" data within the feature report packet and store this value in VREG register 
+//                    *usVREGSptr = ( (ucCmdDatbuf[SENSOR[ucSensPtr].SensOffset + GF_SENS_OFFSET_MSB] << BYTE_SHIFT) | ucCmdDatbuf[SENSOR[ucSensPtr].SensOffset + GF_SENS_OFFSET_LSB]); // Use info about offsets to set VREGS to appropriate data
+//                    
+//                    usVREGSptr = &VREGS.data_rt.ACDXR + ucSensPtr;  // Set pointer to appropriate data rate register
+//                    
+//                    *usVREGSptr = ((ucCmdDatbuf[SENSOR[ucSensPtr].DatRtOffset + GF_DATR_OFFSET_MSB] << BYTE_SHIFT) | ucCmdDatbuf[SENSOR[ucSensPtr].DatRtOffset + GF_DATR_OFFSET_LSB]); //point to appropriate data fields within the feature report and store in VREG reg
+//
+//                    usVREGSptr = (UINT16 *)&(VREGS.expo.exp1);      //point to appropriate data fields within the feature report and store in VREG reg  NOTE: each exponent VREG holds 4 devices' 4bit exponent value fields
+//                    if (ucSensPtr > 3)                              // sensor indexes from 4 to 7 = sensors that have unit exponents in the 2nd exponent register (VREG37)
+//                        usVREGSptr++;                               // Increment ptr to VREG exponent register to be searched
+//
+//                    if (ucSensPtr > 7)                              // sensor indexes > 7 = sensors that have unit exponents in the 3rd exponent register (VREG38)
+//                        usVREGSptr++;                               // Increment ptr to VREG exponent register to be searched
+//
+//                    ucTmpPtr= ucSensPtr % 4;                        // Find the appropriate offset for this sensor's unit exponent
+//
+//                    *usVREGSptr &= ~(0xF << (4*ucTmpPtr));          // Clear unit exponent data   
+//
+//                    if (SENSOR[ucSensPtr].DatExp)
+//                    {
+//                       *usVREGSptr |= (SENSOR[ucSensPtr].DatExp << (4*ucTmpPtr));  // Set the unit exponent data to the appropriate VREG  
+//                    }
+//
+//                    break;              
+//                }   
+//            }			
+//
+//            break;
+//     
+//        case HID_SET_RPT_FEAT:
+//            //for non-Vendor commands, the sensor id is NOT passed in byte[0] to 'HOST_SF_LIB_HID_Set_Report'
+//            ucCmdBufMaxSize = ucCmdDatbuf[RPT_SIZE_LSB];            //get size of GetReportFeature Packet
+//            
+//            if ((ucCmdBufMaxSize == 0) || (ucCmdBufMaxSize == 0xFF)) //is the size reasonable?
+//                return SET_FEAT_FAIL;
+//					
+//            if ( HOST_SF_LIB_HID_Set_Report(SET_RPT_FEAT, ucCmdDatbuf, ucCmdBufMaxSize) )
+//                return SET_FEAT_FAIL;                               // command failed
+//
+//            break;
+//
+//        default:
+//            break;
+//    }
 
     return SUCCESS;
 }
