@@ -3,9 +3,6 @@
 #include <errno.h>
 #include <string.h>
 
-// Custom headers
-#include "i2cIO.h"
-
 // Declare new types
 typedef unsigned char UINT8;        // 8-bit variables
 typedef unsigned char BOOL;
@@ -19,5 +16,8 @@ typedef unsigned long UINT32;
 
 #define SLAVE_ADDR 0x40
 extern int SLAVE_FD;
+
+// Custom headers
+#include "i2cIO.h"
 
 using namespace std;
