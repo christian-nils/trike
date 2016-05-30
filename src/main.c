@@ -87,7 +87,7 @@ int main(void)
 
 	if (sys_init()==0){
 		ucRetStat = VREG_init();
-		printf("SUCCESS!\n");	
+		printf("%d", ucRetStat);	
 	}
 	else {
 		perror("The following error occurred");

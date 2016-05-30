@@ -109,7 +109,7 @@ UINT8 VREG_init()
     }        
     
     hid_i2c_cmd_process(ucBuf, POWER_ON, ARB_ID);                   // Issue HID Power ON command to SSC7150 (NOTE: 'ucBuf' and 'ARB_ID' are don't cares for POWER_ON command)
-    printf("POWERED\n");
+    
     VREGS.SHC.reset = VREG_RESET_INIT;                              //set the SHC reset bit to indicate this operation has not yet completed successfully
     if ( hid_i2c_cmd_process (ucBuf, RESET_DEV_CMD, ARB_ID) )       // Issue HID Reset command  (NOTE: 'ucBuf' and 'ARB_ID' are don't cares for RESET_REG command)
     {
