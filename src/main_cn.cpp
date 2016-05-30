@@ -64,7 +64,7 @@ int main(void)
 
 	if (ucRetStat != 0)
 		cout << "Fail" << endl;
-		return;                               // command failed
+		return ucRetStat;                               // command failed
 //	cout << wiringPiI2CRead(SLAVE_FD) << endl;
 //	perror("wiringPiI2CRead()");
 }
