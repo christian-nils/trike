@@ -611,14 +611,14 @@ UINT8 HOST_SF_LIB_HID_Set_Report(UINT8 type, UINT8 *ReportBuffer, UINT8 size)
     UINT8 ucTx_data[BUF_150];
     UINT8 ucRetStat;
     UINT8 ucCmdBytePtr;
-    BOOL bVendorCmd = FALSE;
-
+//    BOOL bVendorCmd = FALSE;
+	BOOL bVendorCmd = TRUE;
 
     if (size <= 0 || size > (BUF_150 - RPT_LEN))
         return SET_RPT_FAIL;
     
-    if (ReportBuffer[0] == FLASH_UPDATE_RPT_ID)                     // the flash update (Vendor) commands have a different format
-        bVendorCmd = TRUE;
+//    if (ReportBuffer[0] == FLASH_UPDATE_RPT_ID)                     // the flash update (Vendor) commands have a different format
+//        bVendorCmd = TRUE;
     
     ucTx_data[0] = HID_FIELD.wCmdReg;                               //command field bytes from HID config table
     ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);               // Command register MSB

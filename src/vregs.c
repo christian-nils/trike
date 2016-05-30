@@ -88,8 +88,8 @@ UINT8 VREG_init()
     
 //	while (POR_TIMER < I2C_POR_TIMEOUT);							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
  	
-	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
-	{																// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
+//	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
+//	{																// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
         ucRet = i2c_cmd_WrRd (READ,                                 // Read the data from the SSC7150
                             0,                                      //num of cmd bytes
                             0,                                      //cmd buf (ignored)
@@ -100,7 +100,7 @@ UINT8 VREG_init()
         if (ucRet) 
             return HID_INT_FAIL;
 
-	}
+//	}
 
     if ( hid_i2c_descriptor_handler(GET_HID_DESC) )                 // get HID descriptor from SSC7150
     {
