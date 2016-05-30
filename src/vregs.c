@@ -82,10 +82,10 @@ UINT8 VREG_init()
     UINT8 ucSensor_num;
     UINT8 ucRet = FALSE;
     UINT8 ucRx_data[BUF_40];
-	printf("VREG_init() entered\n");
 	
+	printf("VREG_init() entered\n");
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
-    
+    printf("l\n");
 //	while (POR_TIMER < I2C_POR_TIMEOUT);							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
  	
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
@@ -96,10 +96,10 @@ UINT8 VREG_init()
                             BYTE_ADJ_VAL,                           //num of bytes to read
                             ucRx_data,                              //recv buf 
                             TRUE);                                  //actual # of bytes SSC7150 returns is in 1st two bytes of read packet, this flag(=TRUE) means "use the 1st two bytes as the actual read packet length"
-    
+    printf("l\n");
         if (ucRet) 
             return HID_INT_FAIL;
-
+printf("l\n");
 //	}
 
     if ( hid_i2c_descriptor_handler(GET_HID_DESC) )                 // get HID descriptor from SSC7150
