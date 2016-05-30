@@ -3,6 +3,9 @@
 #include <errno.h>
 #include <string.h>
 
+// Custom headers
+#include "i2cIO.h"
+
 #define SLAVE_ADDR 0x40
 extern int SLAVE_FD;
 

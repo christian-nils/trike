@@ -46,5 +46,5 @@ int main(void)
 	int SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
 //	printf("%d", SLAVE_FD);
 	cout << "Init result: "<< SLAVE_FD << endl;
-
+	cout << "Trying to read from IMU" << endl;
 }
