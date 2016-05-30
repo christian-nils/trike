@@ -381,30 +381,30 @@ UINT8 HOST_SF_LIB_VREG_write(UINT8 ucRegOffset, UINT16 usData)
             }
 
        /*****************WAKE COMMAND********************/
-            if (usData & VREG_SHC_WAKE_BIT)                         // wake bit set?
-            {
-                if ((usPREV_SHC_STATE & VREG_SHC_WAKE_BIT) == 0)    // this bit was not previously set, issue wake command
-                {
-                    Wake_signal();                                   //assert wake signal (1 ms toggle of RE9 signal to SSC150)
-
-                    delay(12);                                      //wait 12 ms (11 ms min per spec) after wake signal and before sending POWER_ON command to SSC7150
-					
-                    if (!hid_i2c_cmd_process(0, POWER_ON, ARB_ID))  // Issue the wake command (parameters 1 and 3 are not used)
-                    {
+//            if (usData & VREG_SHC_WAKE_BIT)                         // wake bit set?
+//            {
+//                if ((usPREV_SHC_STATE & VREG_SHC_WAKE_BIT) == 0)    // this bit was not previously set, issue wake command
+//                {
+//                    Wake_signal();                                   //assert wake signal (1 ms toggle of RE9 signal to SSC150)
+//
+//                    delay(12);                                      //wait 12 ms (11 ms min per spec) after wake signal and before sending POWER_ON command to SSC7150
+//					
+//                    if (!hid_i2c_cmd_process(0, POWER_ON, ARB_ID))  // Issue the wake command (parameters 1 and 3 are not used)
+//                    {
                         VREGS.SHC.sleep = FALSE;                    //clear the sleep bit as per API spec
                         VREGS.SHC.SHwake = TRUE;
                         VREGS.stat.stat4.ShSleepWakeStatus = VREG_WAKE_SUCCESS; // Status update to notify command set succesful
 						
-                        //spec says must wait a minimum of 30 ms before next command to SSC7150, so let's wait here...
-                        delay(31);                                  //delay 31 ms (30 ms min per spec)
-                    }
-                    else
-                    {
-                        VREGS.stat.stat4.ShSleepWakeStatus = VREG_WAKE_FAIL; // Status update to notify command set error occurred
-                        return WAKE_CMD_FAIL;
-                    }
-                }
-            }
+//                        //spec says must wait a minimum of 30 ms before next command to SSC7150, so let's wait here...
+//                        delay(31);                                  //delay 31 ms (30 ms min per spec)
+//                    }
+//                    else
+//                    {
+//                        VREGS.stat.stat4.ShSleepWakeStatus = VREG_WAKE_FAIL; // Status update to notify command set error occurred
+//                        return WAKE_CMD_FAIL;
+//                    }
+//                }
+//            }
             
             /*****************SLEEP COMMAND********************/
             if (usData & VREG_SHC_SLP_BIT)                          //sleep bit set?
@@ -425,7 +425,8 @@ UINT8 HOST_SF_LIB_VREG_write(UINT8 ucRegOffset, UINT16 usData)
                         VREGS.SHC.SHwake = FALSE;                   // Clear SHC (VREG00) bit that shows device is not awake
                         
 			//spec says must wait a minimum of 70 ms before wake command, so let's wait here...
-                        delay(71);                                  //delay 71 ms (70 ms min per spec)
+                        
+						delay(71);                                  //delay 71 ms (70 ms min per spec)
 						
                         return SUCCESS;                             // no need to continue checking (since we already checked if any sensors were enabled) and we won't wake & sleep at the same time
                    }
