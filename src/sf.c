@@ -334,7 +334,7 @@ UINT8 hid_i2c_cmd_process(UINT8 *ucCmdDatbuf, UINT8 ucCmd_req, UINT8 ucReport_id
 //
 //        default:
 //            break;
-//    }
+    }
 
     return SUCCESS;
 }
