@@ -4,6 +4,6 @@
 #include <string.h>
 
 #define SLAVE_ADDR 0x40
-#define SLAVE_FD 0
+extern int SLAVE_FD;
 
 using namespace std;

@@ -43,7 +43,7 @@
 
 int main(void) 
 {
-	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
+	int SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
 //	printf("%d", SLAVE_FD);
 	cout << "Init result: "<< SLAVE_FD << endl;
 
