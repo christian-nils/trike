@@ -69,7 +69,7 @@
 //  Section : Main Entry Point
 //*****************************************************************************
 //*****************************************************************************
-
+extern int SLAVE_FD;
 /** main
 * @note	First executed, initializes system, loops forever on menu, error exit only 
 * @param 
@@ -85,7 +85,8 @@ int main(void)
     UINT16 wRMWdata;                                                // temporary data for Read-Modify-Write VREG data
     char err_buf[32];
 
-    ucRetStat = VREG_init();
+	if (sys_init())
+		ucRetStat = VREG_init();
 //    if ( (ucRetStat = VREG_init()) )                                // initialize VREG functions (NOTE: if the SF board does not initialize, end the program)
 //        error_handler("Vini",0,ucRetStat);                          // error display
 
@@ -937,3 +938,11 @@ int main(void)
     return (EXIT_SUCCESS);*/
 }
 
+int sys_init(void){
+	
+	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
+	if (SLAVE_FD<0) // Error
+		return errno;
+		
+	return SUCCESS;
+}
