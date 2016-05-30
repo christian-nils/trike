@@ -43,6 +43,7 @@
 
 int main(void) 
 {
+	UINT8 ucRetStat;
 	UINT8 ucTx_data[BUF_40];  
 	UINT8 ucCmdDatbuf[BUF_40];  
 	HID_DESCRIPTOR_TABLE HID_FIELD;                                     //structure for HID Descriptor 
