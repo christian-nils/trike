@@ -173,7 +173,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case READ:
-            
+            printf("READ\n");
 //            if (MasterWriteI2C1(SLAVE_ADDR | 1))                    // Write slave address with the R/W indicator bit set
 //                i2cIO_error(WRITE_COLL);                            //write collision error (does not return)
             
@@ -193,7 +193,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case WR_RD:
-            
+            printf("RW\n");
 //            if (MasterWriteI2C1(SLAVE_ADDR)) 	                    // Write slave address with the R/W indicator bit cleared
 //                i2cIO_error(WRITE_COLL);                            //write collision (does not return)
 //
