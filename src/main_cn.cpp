@@ -41,12 +41,9 @@
 * @return error status
 */ 
 
-int devId = 40;
-
 int main(void) 
 {
-	int fd;
-	fd = wiringPiI2CSetup(devId);
-	cout << "Init result: "<< fd << endl;
+	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
+	cout << "Init result: "<< SLAVE_FD << endl;
 
 }

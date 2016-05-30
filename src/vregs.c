@@ -87,8 +87,7 @@ UINT8 VREG_init()
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
     
 //	while (POR_TIMER < I2C_POR_TIMEOUT);							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
- 	sleep(2); //CN
-	
+ 	
 	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
 	{																// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
         ucRet = i2c_cmd_WrRd (READ,                                 // Read the data from the SSC7150

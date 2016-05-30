@@ -17,101 +17,54 @@
 * MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE
 * OF THESE TERMS.
 *****************************************************************************/
-
-/** @file  app.h
-*   Generic include header file
-***************************************************************************
+/** @file  i2cIO.h
+*   Header file for i2c functions
+*****************************************************************************
 *   MM7150 with Explorer 16 Development Board Sample Code header file
 *
 *   Company : Microchip Technology Inc.
 *
-*   File name : app.h
+*   File name : i2cIO.h
 *
-*   Summary :  Top level include header file for MM7150 demo code 
+*   Summary :  Include file for MM7150 demo code 
 *
-*   Revisions : 0.3 2-04-15 C21674 - added wake, sleep, flash_update, reset support
-*			  : 0.2 9-30-14 C21674 - relocated error handling params to err.h
+*   Revisions : 0.2 9-30-14 C21674 - error handling params moved to err.h
 *             : 0.1 8-4-14 C21674  - 
 *             : 0.0 7-1-14 C16368  - Initial version created
 ******************************************************************************/
-#ifndef APP_H
-#define	APP_H
+#ifndef I2CIO_H
+#define	I2CIO_H
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
 //****************************************************************************
 //****************************************************************************
-//  Section : Included files
-//****************************************************************************
-//****************************************************************************
-
-#define __GENERIC_TYPE_DEFS_H_
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <float.h>
-
-#include <wiringPiI2C.h>
-
-typedef unsigned char UINT8;        // 8-bit variables
-typedef unsigned char BOOL;
-   
-typedef unsigned short UINT16;      // 16-bit variables
-typedef unsigned long UINT32;
-#define TRUE 1
-#define FALSE 0
-
-//  Peripheral Include Files
-#include "vregs.h"
-#include "sf.h"
-#include "err.h"
-#include "i2cIO.h"
-
-//****************************************************************************
-//****************************************************************************
 //  Section : Defines
 //****************************************************************************
 //****************************************************************************
 
-//menu selection 
 
-#define MENU_ITEMS          16
+#define CONFIG_I2C_VAL  0x8000
+#define CONFIG_BRG_VAL  8
+#define WRITE           1
+#define READ            2
+#define WR_RD           3
+#define SLAVE_ADDR      0x40
+#define SLAVE_FD		0
+#define I2C_POR_TIMEOUT 2000				//i.e. 2 seconds @ 1ms
+//****************************************************************************
+//****************************************************************************
+//  Section : Function Declarations
+//****************************************************************************
+//****************************************************************************
 
-#define MENU_STR_LEN        19
-#define MIN_MENU_SLCT	    2
-
-
-#define MAX_MENU_SLCT	    14       
-#define MAX_LINE_NUM	    15
-
-#define ACCEL_MENU_SLCT     2       //accelerometer
-#define GYRO_MENU_SLCT      3       //gyrometer
-#define COMP_MENU_SLCT      4       //compass
-#define ORI_MENU_SLCT       5       //orientation
-#define INCL_MENU_SLCT      6       //inclinometer
-#define RAW_ACC_MENU_SLCT   7       //raw accelerometer
-#define RAW_MAG_MENU_SLCT   8       //raw magnometer
-#define RAW_GYRO_MENU_SLCT  9       //raw gyrometer
-#define SLP_MENU_SLCT		10		//sleep 
-#define WAKE_MENU_SLCT		11		//wake
-#define FLASH_UPDATE_MENU_SLCT  12  //flash update
-#define CALI_MENU_SLCT		13		//calibration mode
-#define FLASH_CONF_MENU_SLCT	14	//flash configuration mode
-
-
-
-#define DBNCE_VAL           300     // Debounce timer value (empirically derived)
-#define MAX_SENSITIVITY		0
-#define MAX_DATA_RATE		10
-
+void gets_I2C(UINT8 *, UINT16, BOOL);
+UINT8 i2c_cmd_WrRd(UINT8, UINT8,  UINT8 *, UINT16,  UINT8 *, BOOL);
 
 #ifdef	__cplusplus
 }
 #endif
 
-#endif	/* APP_H */
+#endif	/* I2CIO_H */
+

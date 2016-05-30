@@ -85,9 +85,6 @@ int main(void)
     UINT16 wRMWdata;                                                // temporary data for Read-Modify-Write VREG data
     char err_buf[32];
 
-
-//    sys_init();                                                     // initialize Explorer 16 environment (LEDs, LCDs, push buttons, UART2)     
-//    u2out(COM_title_buf);                                           // output title string to UART2
     ucRetStat = VREG_init();
 //    if ( (ucRetStat = VREG_init()) )                                // initialize VREG functions (NOTE: if the SF board does not initialize, end the program)
 //        error_handler("Vini",0,ucRetStat);                          // error display
