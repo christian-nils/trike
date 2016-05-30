@@ -90,7 +90,7 @@ int main(void)
 		printf("SUCCESS!\n");	
 	}
 	else {
-		perror();
+		perror("The following error occurred");
 		return errno;
 		}
 //    if ( (ucRetStat = VREG_init()) )                                // initialize VREG functions (NOTE: if the SF board does not initialize, end the program)
