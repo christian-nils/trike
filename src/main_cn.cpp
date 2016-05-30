@@ -47,6 +47,6 @@ int main(void)
 //	printf("%d", SLAVE_FD);
 	cout << "Init result: "<< SLAVE_FD << endl;
 	cout << "Trying to read from IMU" << endl;
-	cout << wiringPiI2CRead(SLAVE_FD); << endl;
+	cout << wiringPiI2CRead(SLAVE_FD) << endl;
 	
 }
