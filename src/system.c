@@ -4,6 +4,7 @@ volatile BOOL EC_DATA_AVAIL = FALSE;
 
 int sys_init(void){	
 	int SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
+	printf("%i\n", SLAVE_FD);
 	if (SLAVE_FD<0) // Error
 		return errno;
 		
