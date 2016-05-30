@@ -61,8 +61,8 @@ SF_VREGS VREGS;                                                     // structure
 
 GET_SET_PARAMS SET_PARAMS;                                          //structure of SetFeature parameters
 extern SF_SENSOR SENSOR[NUM_SENS];                                  // structure of individual sensors
-//extern volatile BOOL EC_DATA_AVAIL;                                 // flag to indicate when EC has data available to be read
-extern BOOL EC_DATA_AVAIL;                                 // flag to indicate when EC has data available to be read
+extern volatile BOOL EC_DATA_AVAIL;                                 // flag to indicate when EC has data available to be read
+//extern BOOL EC_DATA_AVAIL;                                 // flag to indicate when EC has data available to be read
 UINT16 usPREV_SHC_STATE;                                            // UINT16 buffer to store previous SHC VREG config for comparison
 extern UINT32 POR_TIMER;											// amount of elapsed time (in ms) since POR 
 
