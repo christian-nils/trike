@@ -85,7 +85,7 @@ int main(void)
     UINT16 wRMWdata;                                                // temporary data for Read-Modify-Write VREG data
     char err_buf[32];
 
-	if (sys_init()==SUCCESS){
+	if (sys_init()==0){
 		ucRetStat = VREG_init();
 		printf("SUCCESS!\n");	
 	}

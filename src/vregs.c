@@ -82,7 +82,7 @@ UINT8 VREG_init()
     UINT8 ucSensor_num;
     UINT8 ucRet = FALSE;
     UINT8 ucRx_data[BUF_40];
-
+	printf("VREG_init() entered\n");
 	
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
     
