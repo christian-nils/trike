@@ -130,7 +130,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 {
     UINT8 i;                                                       
     int SLAVE_FD;
-
+	printf("i2c_cmd_WrRd\n");
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine
 
