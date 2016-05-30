@@ -7,3 +7,7 @@ int sys_init(void){
 		
 	return SUCCESS;
 }
+
+int interrupt_init(void){
+	BOOL EC_DATA_AVAIL = FALSE;
+}
