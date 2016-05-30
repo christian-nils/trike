@@ -110,7 +110,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 //            i2cIO_error(RX_OVRFLO);                                 //Rx OVRFLO error (does not return)
 //        
 //        else
-            error_handler("i2c ",0, I2C_ERROR);                     //flag as general i2c error (does not return)
+//            error_handler("i2c ",0, I2C_ERROR);                     //flag as general i2c error (does not return) FIXME
     }
     
 }

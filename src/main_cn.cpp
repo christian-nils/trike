@@ -20,7 +20,7 @@
 //****************************************************************************
 //****************************************************************************
 
-#include "../headers/app.h"
+#include "../headers/main_cn.h"
 
 
 //*****************************************************************************
@@ -44,7 +44,7 @@
 int main(void) 
 {
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
-	printf("%d", SLAVE_FD);
-//	cout << "Init result: "<< SLAVE_FD << endl;
+//	printf("%d", SLAVE_FD);
+	cout << "Init result: "<< SLAVE_FD << endl;
 
 }
