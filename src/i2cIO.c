@@ -66,7 +66,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
     UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
     UINT16 usStat = 0;   
 	int SLAVE_FD;
-
+	
     while (usLength--)
     {
     
@@ -143,7 +143,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
     switch(ucCmd)
     {
         case WRITE:
-            
+            printf("WRITE\n");
 //            if (MasterWriteI2C1(SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
 //                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
 
