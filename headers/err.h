@@ -1,5 +1,5 @@
 /*****************************************************************************
-* © 2014 Microchip Technology Inc. and its subsidiaries.
+* Â© 2014 Microchip Technology Inc. and its subsidiaries.
 * You may use this software and any derivatives exclusively with
 * Microchip products.
 * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".
@@ -102,8 +102,8 @@ extern "C" {
 
 void i2cIO_error(UINT8);
 void error_handler( char *, UINT8, UINT8);
-void StartI2CTimer();                                               //use timer2 interrupt to recover from unresponsive i2c transactions
-void StopI2CTimer();
+//void StartI2CTimer();                                               //use timer2 interrupt to recover from unresponsive i2c transactions
+//void StopI2CTimer();
 
 #ifdef	__cplusplus
 }
