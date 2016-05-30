@@ -87,7 +87,7 @@ int main(void)
 
 	if (sys_init()==0){
 		ucRetStat = VREG_init();
-		printf("%d", ucRetStat);	
+		error_handler("Vini",0,ucRetStat);
 	}
 	else {
 		perror("The following error occurred");
