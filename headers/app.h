@@ -56,7 +56,9 @@ extern "C" {
 #include <stdbool.h>
 #include <float.h>
 #include <time.h>
+#include <errno.h>
 
+#include <wiringPi.h>
 #include <wiringPiI2C.h>
 
 typedef unsigned char UINT8;        // 8-bit variables

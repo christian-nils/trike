@@ -69,14 +69,14 @@
 //  Section : Main Entry Point
 //*****************************************************************************
 //*****************************************************************************
-extern int SLAVE_FD;
+
 /** main
 * @note	First executed, initializes system, loops forever on menu, error exit only 
 * @param 
 * @return error status
 */ 
 int main(void) 
-{
+{	
     UINT8 ucRetStat;                                                // return status value
     UINT8 ucSens_slct;                                              // sensor device selected via menu
     UINT16 wdata;                                                   // pre-exponent-scaled data
@@ -938,9 +938,8 @@ int main(void)
     return (EXIT_SUCCESS);*/
 }
 
-int sys_init(void){
-	
-	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
+int sys_init(void){	
+	int SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR);
 	if (SLAVE_FD<0) // Error
 		return errno;
 		
