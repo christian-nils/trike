@@ -63,7 +63,7 @@ GET_SET_PARAMS SET_PARAMS;                                          //structure 
 extern SF_SENSOR SENSOR[NUM_SENS];                                  // structure of individual sensors
 extern volatile BOOL EC_DATA_AVAIL;                                 // flag to indicate when EC has data available to be read
 UINT16 usPREV_SHC_STATE;                                            // UINT16 buffer to store previous SHC VREG config for comparison
-extern UINT32 POR_TIMER;											// amount of elapsed time (in ms) since POR 
+extern timeval POR_TIMER;											// amount of elapsed time (in ms) since POR 
 
 //*****************************************************************************
 //*****************************************************************************
@@ -82,14 +82,18 @@ UINT8 VREG_init()
     UINT8 ucSensor_num;
     UINT8 ucRet = FALSE;
     UINT8 ucRx_data[BUF_40];
-	
+	UINT32 dPOR_TIMER = 0;
+	timeval tp;
 	
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
     
-//	while (POR_TIMER < I2C_POR_TIMEOUT);							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
- 	
+	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
+		gettimeofday(&tp, 0);
+		dPOR_TIMER = (UINT32)(difftime(POR_TIMER, tp)*1000 + tp.tv_usec/1000-POR_TIMER.tv_usec/1000);
+		POR_TIMER = tp;
+ 	}
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
-	if (FALSE)	//FIXME: To change to the real pin where HIDI2C_HOST_INT is connected
+	if (digitalRead(0) == 0)	//0 is the pin number
 	{																// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
         ucRet = i2c_cmd_WrRd (READ,                                 // Read the data from the SSC7150
                             0,                                      //num of cmd bytes

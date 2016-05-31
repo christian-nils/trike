@@ -2,10 +2,11 @@
 
 volatile BOOL EC_DATA_AVAIL = FALSE;  
 volatile int SLAVE_FD;
+timeval POR_TIMER;													// amount of elapsed time (in ms) since POR 
 
 void sys_init(void){	
 	
-//	POR_TIMER = 0;					//reset POR timer
+	gettimeofday(&POR_TIMER, 0);					//reset POR timer
 	
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	interrupts_init(); // set up all the interrupts
@@ -27,7 +28,7 @@ void Reset_init()
     // configure pin where the wake signal is connected
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
-	digitalWrite(3, 0) ; //set the signal to HIGH
+	digitalWrite(3, 0) ; //set the signal to LOW
 }
 
 /** Wake_init
