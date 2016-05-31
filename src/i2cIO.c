@@ -78,13 +78,14 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 		
 		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
 		printf("%d\n",ucRdptr[i]);
-//        if (usLength)                                               // bytes to be read
-//        {
+        if (usLength)                                               // bytes to be read
+        {
+			printf("%d\n",usLength);
 //            I2C1CONbits.ACKDT= 0;                                   // Set acknowledge bit state for ACK
 //            I2C1CONbits.ACKEN = 1;                                  // Initiate bus acknowledge sequence
 //
 //            MasterWaitForIntrI2C1();                                // Wait for Master "interrupt" request and then clear interrupt Flag.
-//        }
+        }
 
         if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
         {
