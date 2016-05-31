@@ -146,17 +146,17 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
     {
         case WRITE:
             printf("WRITE\n");
-            if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
-                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
-
-            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
+//            if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
+//                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
+//
+//            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
 
 //            if (!I2C1STATbits.ACKSTAT)                               // check for ACK from slave
 //            {
                 for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
                 {
 //                    if ( MasterWriteI2C1(ucData_wr[i]))             // Write one byte of the tx data to the slave
-					if(wiringPiI2CWrite(SLAVE_FD, ucData_wr[i]))
+					if(wiringPiI2CWriteReg8(SLAVE_FD, 0, ucData_wr[i]))
                         i2cIO_error(WRITE_COLL);                    //write collision error display (does not return)
                     
 //                    MasterWaitForIntrI2C1();                        // Wait for Master interrupt request and then clear interrupt Flag.
