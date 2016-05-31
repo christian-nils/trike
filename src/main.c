@@ -85,7 +85,7 @@ int main(void)
     UINT16 wRMWdata;                                                // temporary data for Read-Modify-Write VREG data
     char err_buf[32];
 
-	sys_init());
+	sys_init();
 	ucRetStat = VREG_init();
 	error_handler("Vini",0,ucRetStat);
 
