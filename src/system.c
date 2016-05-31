@@ -64,14 +64,14 @@ int interrupts_init(void){
 	pinMode(0, INPUT); //Alert line gpio is an input
 	// Initialize the EC_DATA_AVAIL value
 	if (digitalRead(0)==0){
-		EC_DATA_AVAIL = FALSE;
+		EC_DATA_AVAIL = TRUE;
 	}
 	else {
-		EC_DATA_AVAIL = TRUE;
+		EC_DATA_AVAIL = FALSE;
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
 	ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt);
-	printf("%i\n", ret);
+	printf("%i\n", EC_DATA_AVAIL);
 //	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
 //		{printf("%f", ret);
 //		return ret; //if not success, return error
