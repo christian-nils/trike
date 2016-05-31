@@ -88,3 +88,10 @@ void data_available_interrupt(void) {
             EC_DATA_AVAIL = FALSE;                                  // interrupt de-asserted
         }
 }
+
+void MasterWaitForIntrI2C(void){
+	
+	while(!EC_DATA_AVAIL);
+	EC_DATA_AVAIL = FALSE;
+	
+}
