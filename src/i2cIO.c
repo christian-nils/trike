@@ -76,7 +76,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 //        MasterWaitForIntrI2C1();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
 		
-		ucRdptr[i++] = wiringPiI2CReadReg8 (SLAVE_FD, 0);
+		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
 		printf("%d\n",ucRdptr[i]);
 //        if (usLength)                                               // bytes to be read
 //        {
@@ -95,23 +95,23 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 
     if (!ucSize)
     {
-//        usStat = I2C1STAT;                                          //read status register
+        usStat = I2C1STAT;                                          //read status register
 //        StopI2CTimer();                                             //turn off timer2 interrupt
-//
-//        if (usStat & ACKSTAT_bit)
-//            i2cIO_error(NOT_ACK);                                   //ACK error (does not return)
-//
-//        else if (usStat & BCL_bit)
-//            i2cIO_error(BUS_COLL);                                  //BCL error (does not return)
-//
-//        else if (usStat & IWOL_bit)
-//            i2cIO_error(WRITE_COLL);                                //WCL error (does not return)
-//
-//        else if (usStat & I2COV_bit)
-//            i2cIO_error(RX_OVRFLO);                                 //Rx OVRFLO error (does not return)
-//        
-//        else
-//            error_handler("i2c ",0, I2C_ERROR);                     //flag as general i2c error (does not return) FIXME
+
+        if (usStat & ACKSTAT_bit)
+            i2cIO_error(NOT_ACK);                                   //ACK error (does not return)
+
+        else if (usStat & BCL_bit)
+            i2cIO_error(BUS_COLL);                                  //BCL error (does not return)
+
+        else if (usStat & IWOL_bit)
+            i2cIO_error(WRITE_COLL);                                //WCL error (does not return)
+
+        else if (usStat & I2COV_bit)
+            i2cIO_error(RX_OVRFLO);                                 //Rx OVRFLO error (does not return)
+        
+        else
+            error_handler("i2c ",0, I2C_ERROR);                     //flag as general i2c error (does not return) FIXME
     }
     
 }
@@ -175,11 +175,11 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case READ:
-            printf("READ\n");
-            if (wiringPiI2CWrite(SLAVE_FD,(SLAVE_ADDR| 1)))                        // Write slave address with the R/W indicator bit cleared
-                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
-            
-            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
+//            printf("READ\n");
+//            if (wiringPiI2CWrite(SLAVE_FD,(SLAVE_ADDR| 1)))                        // Write slave address with the R/W indicator bit cleared
+//                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
+//            
+//            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
 
 //            if (!I2C1STATbits.ACKSTAT)                              // If ACK received then begin reading data from the slave
 //            {
@@ -236,7 +236,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //            if (I2C1STATbits.ACKSTAT)                               // If ACK received then begin reading data from the slave
 //                i2cIO_error(NOT_ACK);                               // ACK error (does not return)
 
-//            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
+            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
                           
 //            NotAckI2C1();                                           // Send NACK 
 //
