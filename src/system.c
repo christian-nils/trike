@@ -2,7 +2,7 @@
 
 volatile BOOL EC_DATA_AVAIL = FALSE;  
 volatile int SLAVE_FD;
-timeval POR_TIMER;													// amount of elapsed time (in ms) since POR 
+struct timeval POR_TIMER;													// amount of elapsed time (in ms) since POR 
 
 void sys_init(void){	
 	

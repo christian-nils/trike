@@ -63,7 +63,7 @@ GET_SET_PARAMS SET_PARAMS;                                          //structure 
 extern SF_SENSOR SENSOR[NUM_SENS];                                  // structure of individual sensors
 extern volatile BOOL EC_DATA_AVAIL;                                 // flag to indicate when EC has data available to be read
 UINT16 usPREV_SHC_STATE;                                            // UINT16 buffer to store previous SHC VREG config for comparison
-extern timeval POR_TIMER;											// amount of elapsed time (in ms) since POR 
+extern struct timeval POR_TIMER;											// amount of elapsed time (in ms) since POR 
 
 //*****************************************************************************
 //*****************************************************************************
@@ -83,7 +83,7 @@ UINT8 VREG_init()
     UINT8 ucRet = FALSE;
     UINT8 ucRx_data[BUF_40];
 	UINT32 dPOR_TIMER = 0;
-	timeval tp;
+	struct timeval tp;
 	
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
     
