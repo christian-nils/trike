@@ -75,7 +75,9 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
         // Wait for a byte to be received from the slave
 //        MasterWaitForIntrI2C1();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
+		
 		ucRdptr[i++] = wiringPiI2CRead(SLAVE_FD);
+		printf("%d\n",ucRdptr[i]);
 //        if (usLength)                                               // bytes to be read
 //        {
 //            I2C1CONbits.ACKDT= 0;                                   // Set acknowledge bit state for ACK
