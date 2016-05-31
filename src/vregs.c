@@ -88,7 +88,7 @@ UINT8 VREG_init()
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
     
 	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
-		gettimeofday(&tp, 0);
+		gettimeofday(&tp, NULL);
 		dPOR_TIMER = (UINT32)((tp.tv_sec-POR_TIMER.tv_sec)*1000 + (tp.tv_usec-POR_TIMER.tv_usec)/1000);
 		printf("%d\n", (double)((tp.tv_sec) + (tp.tv_usec)/1000000));
 		POR_TIMER = tp;

@@ -6,7 +6,7 @@ struct timeval POR_TIMER;													// amount of elapsed time (in ms) since PO
 
 void sys_init(void){	
 	
-	gettimeofday(&POR_TIMER, 0);					//reset POR timer
+	gettimeofday(&POR_TIMER, NULL);					//reset POR timer
 	
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	interrupts_init(); // set up all the interrupts
