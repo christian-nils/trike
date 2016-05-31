@@ -100,7 +100,7 @@ int i;
             if (ucRet)
                 return HID_DESC_FAIL;                               //read HID Config Descriptor failed
             for (i=0; i<HID_CNFG_LEN; i++){
-				printf("%i\n", HID_DESC[i]);
+				printf("%s\n", HID_DESC[i]);
 			}
             HID_FIELD.wHIDDescLen = ( (HID_DESC[1] << BYTE_SHIFT) | HID_DESC[0] );  // As an error check, parse out descriptor table length
                 
