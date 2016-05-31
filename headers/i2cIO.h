@@ -51,7 +51,7 @@ extern "C" {
 #define READ            2
 #define WR_RD           3
 #define SLAVE_ADDR      0x40
-#define I2C_POR_TIMEOUT 5000				//i.e. 5 seconds @ 1ms
+#define I2C_POR_TIMEOUT 2000				//i.e. 2 seconds @ 1ms
 
 //****************************************************************************
 //****************************************************************************
