@@ -89,10 +89,9 @@ UINT8 VREG_init()
     
 	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
 		tp = clock();
-//		dPOR_TIMER = (UINT32)((tp.tv_sec-POR_TIMER.tv_sec)*1000 + (tp.tv_usec-POR_TIMER.tv_usec)/1000);
-		printf("%f\n", (tp-POR_TIMER)/(double)CLOCKS_PER_SEC);
-//		POR_TIMER = tp;
+		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC);
  	}
+	
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
 	if (digitalRead(0) == 0)	//0 is the pin number
 	{																// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
