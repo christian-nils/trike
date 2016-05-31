@@ -27,7 +27,7 @@ void Reset_init()
     // configure pin where the wake signal is connected
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
-	digitalWrite(3, 0) ; //set the signal to LOW
+	digitalWrite(3, 1) ; //set the signal to LOW
 //	delay(2);
 //	digitalWrite(3, 1) ; //set the signal to HIGH 
 }
@@ -92,7 +92,7 @@ void data_available_interrupt(void) {
 }
 
 void MasterWaitForIntrI2C(void){
-	printf("%d,\n", EC_DATA_AVAIL);
+	printf("%d\n", EC_DATA_AVAIL);
 	while(!EC_DATA_AVAIL);
 	EC_DATA_AVAIL = FALSE;	
 }
