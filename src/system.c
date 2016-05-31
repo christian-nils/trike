@@ -28,8 +28,8 @@ void Reset_init()
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
 	digitalWrite(3, 0) ; //set the signal to LOW
-	delay(2);
-	digitalWrite(3, 1) ; //set the signal to HIGH 
+//	delay(2);
+//	digitalWrite(3, 1) ; //set the signal to HIGH 
 }
 
 /** Wake_init
