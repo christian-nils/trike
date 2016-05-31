@@ -78,7 +78,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 //        MasterWaitForIntrI2C();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
 		
-		t = wiringPiI2CReadReg8(SLAVE_FD, 0);
+		t = wiringPiI2CReadReg16(SLAVE_FD, 0);
 		printf("%d\n",t);
 		ucRdptr[i++] = t;
         if (usLength)                                               // bytes to be read
