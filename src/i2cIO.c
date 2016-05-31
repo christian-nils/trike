@@ -95,7 +95,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 
     if (!ucSize)
     {
-        usStat = I2C1STAT;                                          //read status register
+//        usStat = I2C1STAT;                                          //read status register
 //        StopI2CTimer();                                             //turn off timer2 interrupt
 
         if (usStat & ACKSTAT_bit)
