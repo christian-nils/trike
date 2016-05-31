@@ -99,7 +99,7 @@ int i;
                                 FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
             if (ucRet)
                 return HID_DESC_FAIL;                               //read HID Config Descriptor failed
-			printf("%d\n", HID_DESC[0]);
+			printf("%u\n", HID_DESC[0]);
 //            for (i=0; i<HID_CNFG_LEN; i++){
 //				printf("%s\n", HID_DESC[i]);
 //			}
