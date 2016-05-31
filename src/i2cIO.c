@@ -210,8 +210,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 				if(wiringPiI2CWriteReg8(SLAVE_FD, 0, ucData_wr[i]))
                      i2cIO_error(WRITE_COLL);                       //write collision error (does not return)
                  
-				printf("%d\n", ucData_wr[i]&0xFF);   
-//                MasterWaitForIntrI2C1();                            // Wait for Master interrupt request and then clear interrupt Flag.
+//				MasterWaitForIntrI2C();                            // Wait for Master interrupt request and then clear interrupt Flag.
 
 //                if ((i + 1) < ucBytes_wr)                           // If this byte is not the last one, check ACK
 //                {
