@@ -71,16 +71,15 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
     {
     
 //        I2C1CONbits.RCEN = 1;                                       // Send read command to slave
-
+		if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
+			i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
         // Wait for a byte to be received from the slave
-//        MasterWaitForIntrI2C1();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
+        MasterWaitForIntrI2C();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
-		if (i<3){
+		
 		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
-		}
-		else {
-			printf("%d\n",wiringPiI2CReadReg8(SLAVE_FD, 0));
-		}
+		printf("%d\n",ucRdptr[i]);
+		
         if (usLength)                                               // bytes to be read
         {
 			
