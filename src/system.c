@@ -77,7 +77,7 @@ int interrupts_init(void){
 }
 
 void data_available_interrupt(void) {
-	
+	printf("Alert line\n");
 	if (!EC_DATA_AVAIL)                                         // If a falling edge occurred (data is available from EC)
         {
             EC_DATA_AVAIL = TRUE;                                   // Toggle EC_DATA_AVAIL flag to notify data received
