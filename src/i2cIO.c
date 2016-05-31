@@ -53,6 +53,7 @@
 //*****************************************************************************
 //*****************************************************************************
 
+extern volatile int SLAVE_FD;
 /** gets_I2C
 * @note	Read bytes from sensor device via i2c channel slave
 * @param ucRdptr pointer to data buffer from slave
@@ -64,8 +65,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 
     UINT16 i = 0;                                               
     UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
-    UINT16 usStat = 0;   
-	int SLAVE_FD;
+    UINT16 usStat = 0;
 	
     while (usLength--)
     {
@@ -128,8 +128,8 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 */
 UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBytes_rd,  UINT8 *ucData_rd, BOOL bAdjust)
 {
-    UINT8 i;                                                       
-    int SLAVE_FD = 3;
+    UINT8 i;             
+	
 	printf("i2c_cmd_WrRd\n");
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine

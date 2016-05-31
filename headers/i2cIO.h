@@ -53,7 +53,6 @@ extern "C" {
 #define SLAVE_ADDR      0x40
 #define I2C_POR_TIMEOUT 2000				//i.e. 2 seconds @ 1ms
 
-extern int SLAVE_FD;
 //****************************************************************************
 //****************************************************************************
 //  Section : Function Declarations

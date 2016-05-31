@@ -1,6 +1,7 @@
 #include "../headers/app.h"
 
 volatile BOOL EC_DATA_AVAIL = FALSE;  
+volatile int SLAVE_FD;
 
 void sys_init(void){	
 	
@@ -8,7 +9,7 @@ void sys_init(void){
 	
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	interrupts_init(); // set up all the interrupts
-	int SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
+	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
 	
 	Wake_init();	//Initialize the wake signal	
