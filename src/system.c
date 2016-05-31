@@ -15,7 +15,7 @@ void sys_init(void){
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
 	printf("%i\n", digitalRead(0));
 	Wake_init();	//Initialize the wake and reset signal	
-	Reset_init();
+	//Reset_init();
 	printf("%i\n", digitalRead(0));
 	return SUCCESS;
 }
@@ -30,7 +30,7 @@ void Reset_init()
     // configure pin where the wake signal is connected
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
-	//digitalWrite(3, 0) ; //set the signal to LOW
+	digitalWrite(3, 0) ; //set the signal to LOW
 }
 
 /** Wake_init
