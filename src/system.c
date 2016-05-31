@@ -12,9 +12,22 @@ void sys_init(void){
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
 	
-	Wake_init();	//Initialize the wake signal	
-	
+	Wake_init();	//Initialize the wake and reset signal	
+	Reset_init();
 	return SUCCESS;
+}
+
+/** Reset_init
+* @note	config wake on reset pin as output, set LOW initially
+* @param 
+* @return 
+*/ 
+void Reset_init()
+{
+    // configure pin where the wake signal is connected
+	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
+	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
+	digitalWrite(3, 0) ; //set the signal to HIGH
 }
 
 /** Wake_init
@@ -55,7 +68,6 @@ int interrupts_init(void){
 	else {
 		EC_DATA_AVAIL = TRUE;
 	}
-	printf("EC_DATA_AVAIL: %d", EC_DATA_AVAIL);
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
 	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
 		return ret; //if not success, return error
@@ -73,5 +85,4 @@ void data_available_interrupt(void) {
         {
             EC_DATA_AVAIL = FALSE;                                  // interrupt de-asserted
         }
-printf("EC_DATA_AVAIL: %d", EC_DATA_AVAIL);
 }
