@@ -71,8 +71,9 @@ int interrupts_init(void){
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
 	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
+		{printf("%f", ret);
 		return ret; //if not success, return error
-		
+		}
 	return SUCCESS;
 }
 
