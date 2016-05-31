@@ -139,16 +139,15 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
    
 //    IdleI2C1();                                                     // Ensure module is idle
 //    I2C1CONbits.SEN = 1;                                            // Send start bit TO slave
-	printf("%i\n", SLAVE_FD);
-//	wiringPiI2CWrite(SLAVE_FD, ucData_wr[i]);
+	
 //    MasterWaitForIntrI2C1();                                        // Wait for Master interrupt request and then clear interrupt Flag.
 
     switch(ucCmd)
     {
         case WRITE:
             printf("WRITE\n");
-//            if (MasterWriteI2C1(SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
-//                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
+            if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
+                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
 
 //            MasterWaitForIntrI2C1();                                // Wait for Master interrupt request and then clear interrupt Flag.
 
@@ -177,8 +176,8 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 
         case READ:
             printf("READ\n");
-//            if (MasterWriteI2C1(SLAVE_ADDR | 1))                    // Write slave address with the R/W indicator bit set
-//                i2cIO_error(WRITE_COLL);                            //write collision error (does not return)
+            if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
+                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
             
 //            MasterWaitForIntrI2C1();                                // Wait for Master interrupt request and then clear interrupt Flag.
 
