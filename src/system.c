@@ -70,15 +70,16 @@ int interrupts_init(void){
 		EC_DATA_AVAIL = TRUE;
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
-	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
-		{printf("%f", ret);
-		return ret; //if not success, return error
-		}
+	ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt);
+	printf("%f\n", ret);
+//	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
+//		{printf("%f", ret);
+//		return ret; //if not success, return error
+//		}
 	return SUCCESS;
 }
 
 void data_available_interrupt(void) {
-	printf("Alert line\n");
 	if (!EC_DATA_AVAIL)                                         // If a falling edge occurred (data is available from EC)
         {
             EC_DATA_AVAIL = TRUE;                                   // Toggle EC_DATA_AVAIL flag to notify data received
