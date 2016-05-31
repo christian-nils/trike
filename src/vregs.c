@@ -96,7 +96,7 @@ UINT8 VREG_init()
 	if (digitalRead(0) == 0)	//0 is the pin number
 	{																// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
       
- ucRet = i2c_cmd_WrRd (READ,                                 // Read the data from the SSC7150
+		ucRet = i2c_cmd_WrRd (READ,                                 // Read the data from the SSC7150
                             0,                                      //num of cmd bytes
                             0,                                      //cmd buf (ignored)
                             BYTE_ADJ_VAL,                           //num of bytes to read
