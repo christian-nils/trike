@@ -40,7 +40,7 @@ void Wake_init()
     // configure pin where the wake signal is connected
 	pinMode(2, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 	pullUpDnControl(2, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
-	digitalWrite(2, 1) ; //set the signal to HIGH
+	digitalWrite(2, 0) ; //set the signal to HIGH
 }
 
 /** Wake_signal
