@@ -89,7 +89,7 @@ UINT8 VREG_init()
     
 	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
 		gettimeofday(&tp, 0);
-		dPOR_TIMER = (UINT32)(difftime(POR_TIMER, tp)*1000 + tp.tv_usec/1000-POR_TIMER.tv_usec/1000);
+		dPOR_TIMER = (UINT32)(tp.tv_sec-POR_TIMER.tv_sec)*1000 + (tp.tv_usec-POR_TIMER.tv_usec)/1000);
 		POR_TIMER = tp;
  	}
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
