@@ -99,17 +99,17 @@ UINT16 hid_i2c_descriptor_handler(UINT8 ucCmd_req)
                                 FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
             if (ucRet)
                 return HID_DESC_FAIL;                               //read HID Config Descriptor failed
-            printf("1\n");
+            
             HID_FIELD.wHIDDescLen = ( (HID_DESC[1] << BYTE_SHIFT) | HID_DESC[0] );  // As an error check, parse out descriptor table length
-                
+               printf("%i\n", HID_FIELD.wHIDDescLen); 
             if (HID_FIELD.wHIDDescLen != HID_CNFG_LEN)              // If descriptor table length != 30 there is a problem with the transmission
                 return HID_DESC_FAIL;
-             printf("1\n");   
+                
             HID_FIELD.wRepDescLen = ( (HID_DESC[5] << BYTE_SHIFT) | HID_DESC[4] );  // Parse out report descriptor length and store in appropriate variable
                 
             if ( !HID_FIELD.wRepDescLen || HID_FIELD.wRepDescLen == 0xFFFF || (HID_FIELD.wRepDescLen > HID_RPT_LEN) ) // Check to see if the report descriptor size is valid
                 return HID_DESC_FAIL;
-             printf("1\n");   
+                
             HID_FIELD.wRepDescReg = ( (HID_DESC[6] << BYTE_SHIFT) | HID_DESC[7] ); // Parse out report descriptor register and store in appropriate variable
 
             HID_FIELD.wCmdReg = ( (HID_DESC[17] << BYTE_SHIFT) | HID_DESC[16] ); // Parse out command register and store in appropriate variable
