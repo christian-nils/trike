@@ -13,7 +13,7 @@ void sys_init(void){
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
 	Wake_init();	//Initialize the wake and reset signal	
-	//Reset_init();
+	Reset_init();
 	return SUCCESS;
 }
 
@@ -69,7 +69,7 @@ int interrupts_init(void){
 		EC_DATA_AVAIL = FALSE;
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
-	ret = wiringPiISR (0, INT_EDGE_FALLING,  &data_available_interrupt);
+	ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt);
 	
 //	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
 //		{printf("%f", ret);
