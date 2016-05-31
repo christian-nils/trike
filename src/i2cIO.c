@@ -66,7 +66,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
     UINT16 i = 0;                                               
     UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
     UINT16 usStat = 0;
-	
+	printf("%d\n",usLength);
     while (usLength--)
     {
     
@@ -77,10 +77,10 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
 		
 		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
-		printf("%d\n",ucRdptr[i]);
+		//printf("%d\n",ucRdptr[i]);
         if (usLength)                                               // bytes to be read
         {
-			printf("%d\n",usLength);
+			
 //            I2C1CONbits.ACKDT= 0;                                   // Set acknowledge bit state for ACK
 //            I2C1CONbits.ACKEN = 1;                                  // Initiate bus acknowledge sequence
 //
