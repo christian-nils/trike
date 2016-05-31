@@ -77,7 +77,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
 		
 		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
-		//printf("%d\n",ucRdptr[i]);
+		printf("%d\n",ucRdptr[i]);
         if (usLength)                                               // bytes to be read
         {
 			
