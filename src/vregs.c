@@ -107,11 +107,11 @@ UINT8 VREG_init()
             return HID_INT_FAIL;
 	}
 
-//    if ( hid_i2c_descriptor_handler(GET_HID_DESC) )                 // get HID descriptor from SSC7150
-//    {
-//        VREGS.stat.stat4.SHStartStatus = VREG_SHSTART_FAIL;         // update status register (VREG 0x3F) for failure to get HID descriptor
-//        return HID_DESC_FAIL;
-//    }        
+    if ( hid_i2c_descriptor_handler(GET_HID_DESC) )                 // get HID descriptor from SSC7150
+    {
+        VREGS.stat.stat4.SHStartStatus = VREG_SHSTART_FAIL;         // update status register (VREG 0x3F) for failure to get HID descriptor
+        return HID_DESC_FAIL;
+    }        
     
     hid_i2c_cmd_process(ucBuf, POWER_ON, ARB_ID);                   // Issue HID Power ON command to SSC7150 (NOTE: 'ucBuf' and 'ARB_ID' are don't cares for POWER_ON command)
     
