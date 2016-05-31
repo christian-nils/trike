@@ -8,12 +8,15 @@ void sys_init(void){
 	
 	POR_TIMER = clock();					//reset POR timer
 	
+	Reset_init();
+	Wake_init();	//Initialize the wake and reset signal	
+	Wake_signal();
+	
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	interrupts_init(); // set up all the interrupts
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
-	Wake_init();	//Initialize the wake and reset signal	
-	Reset_init();
+
 	return SUCCESS;
 }
 
@@ -27,9 +30,9 @@ void Reset_init()
     // configure pin where the wake signal is connected
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
-	digitalWrite(3, 1) ; //set the signal to LOW
-//	delay(2);
-//	digitalWrite(3, 1) ; //set the signal to HIGH 
+	digitalWrite(3, 0); //set the signal to LOW
+	delay(2);
+	digitalWrite(3, 1) ; //set the signal to HIGH 
 }
 
 /** Wake_init
