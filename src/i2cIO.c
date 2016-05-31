@@ -90,6 +90,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
         if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
         {
             usLength = ((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]) - 2; // Actual length is value of first 2 bytes minus 2 (because we read 2 already)
+			printf("There is %d bytes to read\n",((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]));
             ucSize = usLength;
         }
     }
