@@ -90,7 +90,7 @@ void data_available_interrupt(void) {
 }
 
 void MasterWaitForIntrI2C(void){
-	
+	printf("%d,\n", EC_DATA_AVAIL);
 	while(!EC_DATA_AVAIL);
 	EC_DATA_AVAIL = FALSE;
 	
