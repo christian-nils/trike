@@ -83,7 +83,7 @@ UINT16 hid_i2c_descriptor_handler(UINT8 ucCmd_req)
 {
     UINT8 ucRet = FALSE;
     UINT8 ucTx_data[BUF_40];                                        // buffer for general writes to i2c slave
-
+int i;
     
     switch(ucCmd_req)
     {  
@@ -99,9 +99,11 @@ UINT16 hid_i2c_descriptor_handler(UINT8 ucCmd_req)
                                 FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
             if (ucRet)
                 return HID_DESC_FAIL;                               //read HID Config Descriptor failed
-            
+            for (i=0; i<HID_CNFG_LEN, i++){
+				printf("%i\n", HID_DESC[i]);
+			}
             HID_FIELD.wHIDDescLen = ( (HID_DESC[1] << BYTE_SHIFT) | HID_DESC[0] );  // As an error check, parse out descriptor table length
-               printf("%i\n", HID_FIELD.wHIDDescLen); 
+                
             if (HID_FIELD.wHIDDescLen != HID_CNFG_LEN)              // If descriptor table length != 30 there is a problem with the transmission
                 return HID_DESC_FAIL;
                 
