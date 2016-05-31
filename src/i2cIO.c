@@ -67,8 +67,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
     UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
     UINT16 usStat = 0;
 	printf("%d\n",usLength);
-//    while (usLength--)
-while(1)
+    while (usLength--)
     {
     
 //        I2C1CONbits.RCEN = 1;                                       // Send read command to slave
@@ -77,8 +76,8 @@ while(1)
 //        MasterWaitForIntrI2C1();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
 		
-//		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
-		printf("%d\n",wiringPiI2CReadReg8(SLAVE_FD, 0));
+		ucRdptr[i++] = wiringPiI2CReadReg8(SLAVE_FD, 0);
+		printf("%d\n",ucRdptr[i]);
         if (usLength)                                               // bytes to be read
         {
 			
@@ -88,12 +87,12 @@ while(1)
 //            MasterWaitForIntrI2C1();                                // Wait for Master "interrupt" request and then clear interrupt Flag.
         }
 
-//        if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
-//        {
-//            usLength = ((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]) - 2; // Actual length is value of first 2 bytes minus 2 (because we read 2 already)
-//			printf("There is %d bytes to read\n",((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]));
-//            ucSize = usLength;
-//        }
+        if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
+        {
+            usLength = ((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]) - 2; // Actual length is value of first 2 bytes minus 2 (because we read 2 already)
+			printf("There is %d bytes to read\n",((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]));
+            ucSize = usLength;
+        }
     }
 
     if (!ucSize)
