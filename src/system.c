@@ -10,11 +10,13 @@ void sys_init(void){
 	
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	interrupts_init(); // set up all the interrupts
+	printf("%i\n", digitalRead(0));
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
-	
+	printf("%i\n", digitalRead(0));
 	Wake_init();	//Initialize the wake and reset signal	
 	Reset_init();
+	printf("%i\n", digitalRead(0));
 	return SUCCESS;
 }
 
@@ -70,8 +72,8 @@ int interrupts_init(void){
 		EC_DATA_AVAIL = FALSE;
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
-	ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt);
-	printf("%i\n", EC_DATA_AVAIL);
+	ret = wiringPiISR (0, INT_EDGE_FALLING,  &data_available_interrupt);
+	
 //	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
 //		{printf("%f", ret);
 //		return ret; //if not success, return error
