@@ -67,6 +67,8 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
     UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
     UINT16 usStat = 0;
 	int t;
+	union i2c_smbus_data data;
+	
 	printf("%d\n",usLength);
     while (usLength--)
     {
@@ -78,7 +80,14 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 //        MasterWaitForIntrI2C();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
 //        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
 		
-		t = wiringPiI2CReadReg16(SLAVE_FD, 0);
+//		t = wiringPiI2CReadReg16(SLAVE_FD, 0);
+		 
+
+		  if (i2c_smbus_access (fd, I2C_SMBUS_READ, reg, I2C_SMBUS_BYTE_DATA, &data))
+			return -1 ;
+		  else
+			t = data.byte & 0xFF ;
+			
 		printf("%d\n",t);
 		ucRdptr[i++] = t;
         if (usLength)                                               // bytes to be read
