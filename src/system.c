@@ -4,7 +4,7 @@ volatile BOOL EC_DATA_AVAIL = FALSE;
 
 void sys_init(void){	
 	
-	POR_TIMER = 0;					//reset POR timer
+//	POR_TIMER = 0;					//reset POR timer
 	
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	interrupts_init(); // set up all the interrupts
@@ -55,7 +55,7 @@ int interrupts_init(void){
 		EC_DATA_AVAIL = TRUE;
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
-	if (ret) = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
+	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
 		return ret; //if not success, return error
 		
 	return SUCCESS;
