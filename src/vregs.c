@@ -91,7 +91,7 @@ UINT8 VREG_init()
 		tp = clock();
 //		dPOR_TIMER = (UINT32)((tp.tv_sec-POR_TIMER.tv_sec)*1000 + (tp.tv_usec-POR_TIMER.tv_usec)/1000);
 		printf("%f\n", (tp-POR_TIMER)/(double)CLOCKS_PER_SEC);
-		POR_TIMER = tp;
+//		POR_TIMER = tp;
  	}
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
 	if (digitalRead(0) == 0)	//0 is the pin number
