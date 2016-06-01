@@ -66,60 +66,15 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
     UINT16 i = 0;                                               
     UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
     UINT16 usStat = 0;
-	int t;
-	
-	printf("%d\n",usLength);
-    while (usLength--)
-    {
-    
-//        I2C1CONbits.RCEN = 1;                                       // Send read command to slave
-//		if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
-//			i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
-        // Wait for a byte to be received from the slave
-//        MasterWaitForIntrI2C();                                    // Wait for Master "interrupt" request and then clear interrupt Flag.
-//        ucRdptr[i++] = I2C1RCV;                                     // Read in the byte received from slave, clearing RBF
+	UINT32 ret;
 		
-		t = wiringPiI2CReadReg8(SLAVE_FD, 0);	
-		printf("%d\n",t);
-		ucRdptr[i++] = t;
-//        if (usLength)                                               // bytes to be read
-//        {
-//			
-////            I2C1CONbits.ACKDT= 0;                                   // Set acknowledge bit state for ACK
-////            I2C1CONbits.ACKEN = 1;                                  // Initiate bus acknowledge sequence
-////
-////            MasterWaitForIntrI2C1();                                // Wait for Master "interrupt" request and then clear interrupt Flag.
-//        }
-
-        if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
-        {
-            usLength = ((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]) - 2; // Actual length is value of first 2 bytes minus 2 (because we read 2 already)
-			printf("There is %d bytes to read\n",((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]));
-            ucSize = usLength;
-        }
-    }
-
-    if (!ucSize)
-    {
-//        usStat = I2C1STAT;                                          //read status register
-//        StopI2CTimer();                                             //turn off timer2 interrupt
-
-        if (usStat & ACKSTAT_bit)
-            i2cIO_error(NOT_ACK);                                   //ACK error (does not return)
-
-        else if (usStat & BCL_bit)
-            i2cIO_error(BUS_COLL);                                  //BCL error (does not return)
-
-        else if (usStat & IWOL_bit)
-            i2cIO_error(WRITE_COLL);                                //WCL error (does not return)
-
-        else if (usStat & I2COV_bit)
-            i2cIO_error(RX_OVRFLO);                                 //Rx OVRFLO error (does not return)
-        
-        else
-            error_handler("i2c ",0, I2C_ERROR);                     //flag as general i2c error (does not return) FIXME
-    }
-    
+	if (!bAdjust){
+		ret = i2c_smbus_read_i2c_block_data(SLAVE_FD,
+			0, usLength, ucRdptr); // you specify explicitly the length
+	} else{
+		ret = i2c_smbus_read_block_data(SLAVE_FD,
+			0, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
+	}      
 }
   
 
@@ -134,120 +89,38 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 * @return I2C_SUCCESS(=0), I2C_BUF_OVRFLO(=0x22)
 */
 UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBytes_rd,  UINT8 *ucData_rd, BOOL bAdjust)
-{
-    UINT8 i;             
-	
+{        
 	printf("i2c_cmd_WrRd\n");
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine
 
-//    StartI2CTimer();                                                // start timer2 interrupt in case i2c hangs in 'while loop' functions
-   
-//    IdleI2C1();                                                     // Ensure module is idle
-//    I2C1CONbits.SEN = 1;                                            // Send start bit TO slave
-	
-//    MasterWaitForIntrI2C1();                                        // Wait for Master interrupt request and then clear interrupt Flag.
-
     switch(ucCmd)
     {
         case WRITE:
-            printf("WRITE\n");
-//            if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
-//                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
-//
-//            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
-
-//            if (!I2C1STATbits.ACKSTAT)                               // check for ACK from slave
-//            {
-                for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
-                {
-//                    if ( MasterWriteI2C1(ucData_wr[i]))             // Write one byte of the tx data to the slave
-					if(wiringPiI2CWriteReg8(SLAVE_FD, 0, ucData_wr[i]))
-                        i2cIO_error(WRITE_COLL);                    //write collision error display (does not return)
+//s32 i2c_smbus_write_i2c_block_data(struct i2c_client *client, // you can control the lenght of the tx data. Without sending the count to the slave device.
+//					   u8 command, u8 length,
+//					   const u8 *values);
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, // you can control the lenght of the tx data. Without sending the count to the slave device.
+												0, ucBytes_wr, &ucData_wr)){
+                        i2cIO_error(WRITE_COLL);      //FIXME         
+					   }
                     
-//                    MasterWaitForIntrI2C1();                        // Wait for Master interrupt request and then clear interrupt Flag.
-
-//                    if((i + 1) < ucBytes_wr)                        // If this byte is not the last one, check ACK
-//                    {
-//                        if (I2C1STATbits.ACKSTAT)                   // check for ACK condition, if received
-//                           i2cIO_error(NOT_ACK);                    //ACK error (does not return)
-//                   }    
-                }
-//            }
-            
-//            else
-//                i2cIO_error(NOT_ACK);                              //ACK error (does not return)
-
             break;
 
         case READ:
-//            printf("READ\n");
-//            if (wiringPiI2CWrite(SLAVE_FD,(SLAVE_ADDR| 1)))                        // Write slave address with the R/W indicator bit cleared
-//                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
-//            
-//            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
 
-//            if (!I2C1STATbits.ACKSTAT)                              // If ACK received then begin reading data from the slave
-//            {
-                gets_I2C(ucData_rd, usBytes_rd, bAdjust);          // Read in multiple bytes
+			gets_I2C(ucData_rd, usBytes_rd, bAdjust);          // Read in multiple bytes
 
-//                NotAckI2C1();                                       // NACK
-                
-//                MasterWaitForIntrI2C1();                            // Wait for the interrupt request
-//            }
-//            else
-//                i2cIO_error(NOT_ACK);                               //ACK error (does not return)
-//        
             break;
 
         case WR_RD:
-            printf("RW\n");
-//            if (wiringPiI2CWrite(SLAVE_FD,SLAVE_ADDR))                        // Write slave address with the R/W indicator bit cleared
-//                i2cIO_error(WRITE_COLL);                            //write collision error display (does not return)
-//
-//            MasterWaitForIntrI2C();                                // Wait for Master interrupt request and then clear interrupt Flag.
-//
-//            if (I2C1STATbits.ACKSTAT)                               // check for ACK condition
-//               i2cIO_error(NOT_ACK);                                // ACK error (does not return)
-
-            for(i = 0; i < ucBytes_wr; i++)                         // Begin a loop writing the tx bytes to the slave
-            {
-//                if (MasterWriteI2C1(ucData_wr[i]))                  // Write one byte of the tx data to the slave
-				if(wiringPiI2CWriteReg8(SLAVE_FD, 0, ucData_wr[i]))
-                     i2cIO_error(WRITE_COLL);                       //write collision error (does not return)
-                 
-//				MasterWaitForIntrI2C();                            // Wait for Master interrupt request and then clear interrupt Flag.
-
-//                if ((i + 1) < ucBytes_wr)                           // If this byte is not the last one, check ACK
-//                {
-//                    if (I2C1STATbits.ACKSTAT)                       // check for ACK condition, if received
-//                       i2cIO_error(NOT_ACK);                       //ACK error (does not return)
-//               }
-            }
-
-//            if (I2C1STATbits.ACKSTAT)                               // check for ACK condition
-//                i2cIO_error(NOT_ACK);                               // ACK error (does not return)
-//               
-//            RestartI2C1();                                          // Generate I2C bus restart condition
-                    
-//            while (I2C1CONbits.RSEN);                               // Wait until re-start condition is over
-//                    
-//            MasterWaitForIntrI2C1();                                // Wait for interrupt request
-
-//            if (MasterWriteI2C1(SLAVE_ADDR | 1))    	            // Write slave address with the R/W indicator bit set
-//                i2cIO_error(WRITE_COLL);                            //write collision error (does not return)
-//
-//            MasterWaitForIntrI2C1();                                // Wait for Master interrupt request and then clear interrupt Flag.
-//
-//            if (I2C1STATbits.ACKSTAT)                               // If ACK received then begin reading data from the slave
-//                i2cIO_error(NOT_ACK);                               // ACK error (does not return)
-
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, // you can control the lenght of the tx data. Without sending the count to the slave device.
+							0, ucBytes_wr, &ucData_wr))
+			{
+				i2cIO_error(WRITE_COLL);      //FIXME         
+			}
             gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
-                          
-//            NotAckI2C1();                                           // Send NACK 
-//
-//            MasterWaitForIntrI2C1();                                // Wait for interrupt request
-
+            
             break;
     }
 

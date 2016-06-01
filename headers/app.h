@@ -57,6 +57,7 @@ extern "C" {
 #include <float.h>
 #include <time.h>
 #include <errno.h>
+#include <i2c-dev.h>
 
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
