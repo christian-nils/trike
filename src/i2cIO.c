@@ -54,6 +54,7 @@
 //*****************************************************************************
 
 extern volatile int SLAVE_FD;
+
 /** gets_I2C
 * @note	Read bytes from sensor device via i2c channel slave
 * @param ucRdptr pointer to data buffer from slave
@@ -90,21 +91,17 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 */
 UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBytes_rd,  UINT8 *ucData_rd, BOOL bAdjust)
 {        
-	printf("i2c_cmd_WrRd\n");
+	
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine
 
     switch(ucCmd)
     {
         case WRITE:
-//s32 i2c_smbus_write_i2c_block_data(struct i2c_client *client, // you can control the lenght of the tx data. Without sending the count to the slave device.
-//					   u8 command, u8 length,
-//					   const u8 *values);
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, // you can control the lenght of the tx data. Without sending the count to the slave device.
-												0, ucBytes_wr, &ucData_wr)){
-                        i2cIO_error(WRITE_COLL);      //FIXME         
-					   }
-                    
+		// you can control the lenght of the tx data. Without sending the count to the slave device.
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, &ucData_wr))
+				i2cIO_error(WRITE_COLL);      //FIXME       
+					   
             break;
 
         case READ:
@@ -114,23 +111,14 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case WR_RD:
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, // you can control the lenght of the tx data. Without sending the count to the slave device.
-							0, ucBytes_wr, &ucData_wr))
-			{
+		
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, &ucData_wr))			
 				i2cIO_error(WRITE_COLL);      //FIXME         
-			}
+			
             gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
             
             break;
     }
-
-//    StopI2C1();                                                     // Send STOP condition
-    
-//    while (I2C1CONbits.PEN );                                       // Wait until stop condition is over
-//    
-//    MasterWaitForIntrI2C1();                                        // Wait for interrupt request
-//   
-//    StopI2CTimer();                                                 //turn off timer2 interrupt 
 
     return I2C_SUCCESS;
 }
