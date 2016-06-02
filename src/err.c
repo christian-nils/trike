@@ -44,15 +44,6 @@
 
 //*****************************************************************************
 //*****************************************************************************
-//  Section : File scope variables and functions
-//*****************************************************************************
-//*****************************************************************************
-
-extern volatile UINT16 I2C_TIMEOUT_1MS_CNTR;
-extern volatile UINT8 PB_EVT;
-
-//*****************************************************************************
-//*****************************************************************************
 //  Section : Code
 //*****************************************************************************
 //*****************************************************************************
@@ -66,50 +57,9 @@ extern volatile UINT8 PB_EVT;
 void error_handler( char *str, UINT8 offset, UINT8 errval)
 {
     char err_buf[64];
-    UINT16 wait_cnt;
 
-    //output to uart
     sprintf ( err_buf, "***Error in function: %s:%02X errval=0x%X*** \n\r", str, offset, errval);
 	printf("%s", err_buf);
-//    u2out(err_buf);
-//
-//        
-//    //output to LCD screen
-//    LCD_ClearScreen ( ) ;
-//
-//    sprintf ( err_buf, "%s:%02X err=0x%X", str, offset, errval);
-//    LCD_PutString(err_buf, 16);
-//
-//    if ((errval & 0xF0) == 0x20)
-//    {  
-//        LCD_PutString("POR Exp16 Board ", 16);
-//        u2out("    Explorer16 Board requires PowerOnReset\n\r");
-//        while (1);                                                  //hang here
-//    }    
-//
-//    LCD_PutString("Push S5 to cont ", 16);
-//    u2out("    Press button S5 to continue...\n\r");
-//
-//    wait_cnt = 0;
-//    while(1)
-//    {
-//        if (SW_S5_LOW)                                              //wait for user to press S5 (which has no interrupt associated with it) to acknowledge the error and continue
-//        {
-//            PB_EVT = 0xFF;                                          //cancel the button push
-//            PORTA &= ~LED_D03;                                      //turn error LED D3 off
-//            LCD_ClearScreen ( ) ;
-//            break;
-//        }
-//        delay(DELAY1);                                              // Delay 100 msec
-//        wait_cnt++;
-//        if (wait_cnt == 5)
-//            PORTA |= LED_D03;                                       // turn on LED D3 to indicate error
-//        if (wait_cnt > 10)
-//        {
-//            PORTA &= ~LED_D03;                                      // Blink LED D3 to indicate error
-//            wait_cnt = 0;
-//        }
-//    }
 
 }
 
@@ -124,44 +74,7 @@ void i2cIO_error (UINT8 ucCode)
 {
     char err_buf[32];
 
-
-//    StopI2CTimer();                                                 //turn off timer2 interrupt 
-//    StopI2C1();
-
     sprintf(err_buf, "***i2cIO_error code = 0x%X\n\r", ucCode);
 	printf("%s", err_buf);
-//    u2out(err_buf);
-//  
-//    //output to LCD screen
-//    LCD_ClearScreen ( );
-//
-//    sprintf ( err_buf, "i2c error=0x%02X  ", ucCode);
-//    LCD_PutString(err_buf, 16);
-//
-//    LCD_PutString("POR Exp16 Board ", 16);
-//    u2out("    Explorer16 Board requires PowerOnReset\n\r");
-//
-//    while (1);                                                      //hang here
+	
 }   
-
-///** StartI2CTimer
-//* @note	Start Timer2 interrupts, used to interrupt i2c bus that is non-responsive
-//* @return 
-//*/
-//void StartI2CTimer()
-//{
-// 
-//    I2C_TIMEOUT_1MS_CNTR = 0;                                       //reset the timeout timer count
-//    T2CONbits.TON = 1;                                              //start timer2 (and timer2 1ms interrupts)
-//}
-
-///** StopI2CTimer
-//* @note	Stop Timer2 and associated interrupt
-//* @return 
-//*/
-//void StopI2CTimer()
-//{
-//
-//    T2CONbits.TON = 0;                                              //stop timer2 (and timer2 1ms interrupts)
-//
-//}
