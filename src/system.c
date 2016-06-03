@@ -15,7 +15,7 @@ void sys_init(void){
 	Wake_signal();
 	
 	interrupts_init(); // set up all the interrupts
-	
+
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
 
