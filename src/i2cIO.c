@@ -42,13 +42,14 @@ extern volatile int SLAVE_FD;
 */ 
 void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 
+	UINT8 cmd;
 	UINT32 ret;
 	int i;
 	
 	if (!bAdjust){
-		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, NULL, usLength, ucRdptr); // you specify explicitly the length
+		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, cmd, usLength, ucRdptr); // you specify explicitly the length
 	} else{
-		ret = i2c_smbus_read_block_data		(SLAVE_FD, NULL, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
+		ret = i2c_smbus_read_block_data		(SLAVE_FD, cmd, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
 	}      
 	for (i=0; i<usLength; i++){
 		printf("%d\n", ucRdptr[i]);
@@ -83,7 +84,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //				ucData_wr[i] = ucData_wr[i+1];
 //			}
 //			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, NULL, ucBytes_wr, ucData_wr)<0){
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd, ucBytes_wr, ucData_wr)<0){
 				printf("Error in i2c writing\n");         
 			}
 					   
@@ -102,7 +103,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 				ucData_wr[i] = ucData_wr[i+1];
 			}
 //			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, NULL, ucBytes_wr-1, ucData_wr)<0){
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd, ucBytes_wr-1, ucData_wr)<0){
 				printf("Error in i2c writing\n");         
 			}
 //			while(digitalRead(0) == 1);
