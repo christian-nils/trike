@@ -46,9 +46,9 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 	int i;
 	
 	if (!bAdjust){
-		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, 0x00, usLength, ucRdptr); // you specify explicitly the length
+		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, (UINT8)0xFF, usLength, ucRdptr); // you specify explicitly the length
 	} else{
-		ret = i2c_smbus_read_block_data		(SLAVE_FD, 0x00, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
+		ret = i2c_smbus_read_block_data		(SLAVE_FD, (UINT8)0xFF, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
 	}      
 	for (i=0; i<usLength; i++){
 		printf("%d\n", ucRdptr[i]);
