@@ -92,7 +92,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, ucData_wr))			
 				i2cIO_error(WRITE_COLL);      //FIXME         
 			
-            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
+            //gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
             
             break;
     }
