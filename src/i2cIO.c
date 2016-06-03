@@ -42,18 +42,59 @@ extern volatile int SLAVE_FD;
 */ 
 void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 
-	UINT8 cmd[0];
-	UINT32 ret;
-	int i;
-	
-	if (!bAdjust){
-		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, cmd, usLength, ucRdptr); // you specify explicitly the length
-	} else{
-		ret = i2c_smbus_read_block_data		(SLAVE_FD, cmd, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
-	}      
-	for (i=0; i<usLength; i++){
-		printf("%d\n", ucRdptr[i]);
-	}
+
+    UINT16 i = 0;                                               
+    UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
+    UINT16 usStat = 0;   
+
+
+    while (usLength--)
+    {		                                     
+		if (usLength==1){
+			ucRdptr[i++] = i2c_read_byte(NACK , FALSE) ;// Read in the byte received from slave
+		} else {
+			ucRdptr[i++] = i2c_read_byte(ACK , FALSE) ;
+		}
+        if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
+        {
+            usLength = ((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]) - 2; // Actual length is value of first 2 bytes minus 2 (because we read 2 already)
+            ucSize = usLength;
+        }
+    }
+
+//    if (!ucSize)
+//    {
+//        usStat = I2C1STAT;                                          //read status register
+//        StopI2CTimer();                                             //turn off timer2 interrupt
+//
+//        if (usStat & ACKSTAT_bit)
+//            i2cIO_error(NOT_ACK);                                   //ACK error (does not return)
+//
+//        else if (usStat & BCL_bit)
+//            i2cIO_error(BUS_COLL);                                  //BCL error (does not return)
+//
+//        else if (usStat & IWOL_bit)
+//            i2cIO_error(WRITE_COLL);                                //WCL error (does not return)
+//
+//        else if (usStat & I2COV_bit)
+//            i2cIO_error(RX_OVRFLO);                                 //Rx OVRFLO error (does not return)
+//        
+//        else
+//            error_handler("i2c ",0, I2C_ERROR);                     //flag as general i2c error (does not return)
+//    }
+  
+//	UINT8 cmd[0];
+//	UINT32 ret;
+//	int i;
+//	
+//	if (!bAdjust){
+//		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, cmd, usLength, ucRdptr); // you specify explicitly the length
+//	} else{
+//		ret = i2c_smbus_read_block_data		(SLAVE_FD, cmd, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
+//	}      
+//	for (i=0; i<usLength; i++){
+//		printf("%d\n", ucRdptr[i]);
+//	}
 }
   
 
@@ -69,48 +110,86 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 */
 UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBytes_rd,  UINT8 *ucData_rd, BOOL bAdjust)
 {        
-	UINT32 ret;
+//	UINT32 ret;
 	int i;
-	UINT8 cmd;
+//	UINT8 cmd;
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine
 
+//	StartI2CTimer();                                                // start timer2 interrupt in case i2c hangs in 'while loop' functions
+   
+//    IdleI2C1();                                                     // Ensure module is idle
+    i2c_start_cond();                                          // Send start bit TO slave
+//    MasterWaitForIntrI2C1();                                        // Wait for Master interrupt request and then clear interrupt Flag.
+	
     switch(ucCmd)
     {
         case WRITE:
-			cmd = ucData_wr[0];
-			// Shift from one byte
-			for (i=0;i++;i<ucBytes_wr-1){
-				ucData_wr[i] = ucData_wr[i+1];
-			}
-//			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd , ucBytes_wr, ucData_wr)<0){
-				printf("Error in i2c writing\n");         
-			}
-					   
+//			cmd = ucData_wr[0];
+//			// Shift from one byte
+//			for (i=0;i++;i<ucBytes_wr-1){
+//				ucData_wr[i] = ucData_wr[i+1];
+//			}
+////			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
+//			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd , ucBytes_wr, ucData_wr)<0){
+//				printf("Error in i2c writing\n");         
+//			}
+            if (i2c_write_byte(FALSE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
+            {
+                for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
+                {              
+					i2c_write_byte(FALSE, FALSE, ucData_wr[i]); 
+                }
+            }
+            
+            else
+                i2cIO_error(NOT_ACK);                              //ACK error (does not return)	   
             break;
 
         case READ:
-
-			gets_I2C(ucData_rd, usBytes_rd, bAdjust);          // Read in multiple bytes
+		
+			if (i2c_write_byte(FALSE,FALSE,SLAVE_ADDR | 1)==ACK)                               // check for ACK from slave
+				{
+					gets_I2C(ucData_rd, usBytes_rd, bAdjust);                             
+				}
+            else
+                i2cIO_error(NOT_ACK);                               //ACK error (does not return)
 
             break;
 
         case WR_RD:			
-			cmd = ucData_wr[0];
-			for (i=0;i++;i<ucBytes_wr-1){
-				ucData_wr[i] = ucData_wr[i+1];
-			}
-//			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd, ucBytes_wr-1, ucData_wr)<0){
-				printf("Error in i2c writing\n"); 
-				perror("Reason ");        
-			}
-//			while(digitalRead(0) == 1);
-            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
-            
+//			cmd = ucData_wr[0];
+//			for (i=0;i++;i<ucBytes_wr-1){
+//				ucData_wr[i] = ucData_wr[i+1];
+//			}
+////			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
+//			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd, ucBytes_wr-1, ucData_wr)<0){
+//				printf("Error in i2c writing\n"); 
+//				perror("Reason ");        
+//			}
+////			while(digitalRead(0) == 1);
+//            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
+			if (i2c_write_byte(FALSE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
+            {
+                for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
+                {              
+					i2c_write_byte(FALSE, FALSE, ucData_wr[i]); 
+                }
+            }            
+            else
+                i2cIO_error(NOT_ACK);                              //ACK error (does not return)	   
+                                   
+			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR | 1)==ACK)   // check for ACK from slave
+				{
+					gets_I2C(ucData_rd, usBytes_rd, bAdjust);                             
+				}
+            else
+                i2cIO_error(NOT_ACK);                               //ACK error (does not return)
+						
             break;
     }
 
+	i2c_stop_cond();
+	
     return I2C_SUCCESS;
 }
