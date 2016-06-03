@@ -97,7 +97,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case WR_RD:			
-			cmd = ucData_wr[[0];
+			cmd = ucData_wr[0];
 			for (i=0;i++;i<ucBytes_wr-1){
 				ucData_wr[i] = ucData_wr[i+1];
 			}
