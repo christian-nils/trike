@@ -46,9 +46,9 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 	int i;
 	
 	if (!bAdjust){
-		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, 0x00, usLength, &ucRdptr); // you specify explicitly the length
+		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, 0x00, usLength, ucRdptr); // you specify explicitly the length
 	} else{
-		ret = i2c_smbus_read_block_data		(SLAVE_FD, 0x00, &ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
+		ret = i2c_smbus_read_block_data		(SLAVE_FD, 0x00, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
 	}      
 	for (i=0; i<usLength; i++){
 		printf("%d\n", ucRdptr[i]);
@@ -76,7 +76,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
     {
         case WRITE:
 		// you can control the lenght of the tx data. Without sending the count to the slave device.
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, &ucData_wr))
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, ucData_wr))
 				i2cIO_error(WRITE_COLL);      //FIXME       
 					   
             break;
@@ -89,7 +89,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 
         case WR_RD:
 		
-			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, &ucData_wr))			
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, 0, ucBytes_wr, ucData_wr))			
 				i2cIO_error(WRITE_COLL);      //FIXME         
 			
             gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
