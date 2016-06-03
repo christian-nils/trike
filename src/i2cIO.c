@@ -68,6 +68,7 @@ void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 */
 UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBytes_rd,  UINT8 *ucData_rd, BOOL bAdjust)
 {        
+	UINT32 ret;
 	
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine
@@ -88,9 +89,9 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case WR_RD:
-			if(i2c_smbus_read_i2c_block_data	(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)){
+			if(ret = i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)){
 //			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, (UINT8)0x00, ucBytes_wr, ucData_wr))			
-			perror("Error while i2c writing:");           }
+			printf("Error while i2c writing: %d\n", ret);           }
 //			while(digitalRead(0) == 1);
 //            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
             
