@@ -99,7 +99,8 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
         case WR_RD:			
 //			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
 			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd, ucBytes_wr, ucData_wr)<0){
-				printf("Error in i2c writing\n");         
+				printf("Error in i2c writing\n"); 
+perror("Reason: ");        
 			}
 //			while(digitalRead(0) == 1);
 //           gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
