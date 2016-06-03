@@ -33,7 +33,7 @@ void Reset_init()
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 //	digitalWrite(3, 0); //set the signal to LOW
 //	delay(2);
-	digitalWrite(3, 0) ; //set the signal to HIGH 
+	digitalWrite(3, 1) ; //set the signal to HIGH 
 }
 
 /** Wake_init
