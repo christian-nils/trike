@@ -8,12 +8,13 @@ void sys_init(void){
 	
 	POR_TIMER = clock();					//reset POR timer
 	
+	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
+	
 	Reset_init();
 	Wake_init();	//Initialize the wake and reset signal	
 	Wake_signal();
 	
-	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
-	interrupts_init(); // set up all the interrupts
+	wnterrupts_init(); // set up all the interrupts
 	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 	printf("IMU set up , FID: %i\n", SLAVE_FD);
 
