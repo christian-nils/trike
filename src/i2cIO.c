@@ -42,28 +42,17 @@ extern volatile int SLAVE_FD;
 */ 
 void gets_I2C(UINT8 *ucRdptr, UINT16 usLength, BOOL bAdjust){
 
-UINT16 i = 0;
-  UINT8 ucSize = 1;                                                // Set return value for size of data read for bAdjust=FALSE
-  UINT16 usStat = 0;
-
-
-  while (usLength--)
-  {
-    if (usLength)                                               // bytes to be read
-    {
-      ucRdptr[i] = i2c_smbus_read_byte(SLAVE_FD);
-      i++;
-    }
-    else {
-      ucRdptr[i++] = i2c_smbus_read_byte(SLAVE_FD);
-    }
-
-    if (bAdjust && i == 2)                                      // Read first 2 bytes which have the length of the packet
-    {
-      usLength = ((ucRdptr[1] << BYTE_SHIFT) | ucRdptr[0]) - 2; // Actual length is value of first 2 bytes minus 2 (because we read 2 already)
-      ucSize = usLength;
-    }
-  }
+	UINT32 ret;
+	int i;
+	
+	if (!bAdjust){
+		ret = i2c_smbus_read_i2c_block_data	(SLAVE_FD, NULL, usLength, ucRdptr); // you specify explicitly the length
+	} else{
+		ret = i2c_smbus_read_block_data		(SLAVE_FD, NULL, ucRdptr); //automatically get the number of bytes to read (up to 32bytes)
+	}      
+	for (i=0; i<usLength; i++){
+		printf("%d\n", ucRdptr[i]);
+	}
 }
   
 
@@ -107,34 +96,16 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             break;
 
         case WR_RD:			
-//			cmd = ucData_wr[0];
-//			// Shift from one byte
-//			for (i=0;i++;i<ucBytes_wr-1){
-//				ucData_wr[i] = ucData_wr[i+1];
-//			}
-//			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
-//			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, NULL, ucBytes_wr, ucData_wr)<0){
-//				printf("Error in i2c writing\n");         
-//			}
-//			while(digitalRead(0) == 1);
-			
-			ret = write(SLAVE_FD, SLAVE_ADDR, 1);
-//			if (status)
-//			  error_handler("i2c ", 0, I2C_ERROR);
-
-			for (i = 0; i < ucBytes_wr; i++)                         // Begin a loop writing the tx bytes to the slave
-			{
-			  ret = write(SLAVE_FD, ucData_wr[i], 1);
+			cmd = ucData_wr[0];
+			// Shift from one byte
+			for (i=0;i++;i<ucBytes_wr-1){
+				ucData_wr[i] = ucData_wr[i+1];
 			}
-
-//			status = I2C_Restart();
-//			if (status)
-//			  error_handler("i2c ", 0, I2C_ERROR);
-
-//			status = I2C_Write(SLAVE_ADDR | 1);
-//			if (status)
-//			  error_handler("i2c ", 0, I2C_ERROR);
-	  
+//			if(ret=i2c_smbus_read_i2c_block_data(SLAVE_FD, ucData_wr[1], usBytes_rd, ucData_rd)>0)
+			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, NULL, ucBytes_wr-1, ucData_wr)<0){
+				printf("Error in i2c writing\n");         
+			}
+//			while(digitalRead(0) == 1);
            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
             
             break;

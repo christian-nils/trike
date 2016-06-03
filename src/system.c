@@ -31,7 +31,6 @@ void Reset_init()
 {
     // configure pin where the wake signal is connected
 	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
-	pullUpDnControl(3, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
 //	digitalWrite(3, 0); //set the signal to LOW
 //	delay(2);
 	digitalWrite(3, 1) ; //set the signal to HIGH 
@@ -46,7 +45,6 @@ void Wake_init()
 {
     // configure pin where the wake signal is connected
 	pinMode(2, OUTPUT); //Set the GPIO pin 2 to OUTPUT
-	pullUpDnControl(2, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
 	digitalWrite(2, 1) ; //set the signal to HIGH
 }
 
@@ -67,7 +65,8 @@ void Wake_signal()
 int interrupts_init(void){
 	int ret;
 	
-	pinMode(0, INPUT); //Alert line gpio is an input
+	pinMode(0, INPUT); //Alert line gpio is an input	
+	pullUpDnControl(0, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
 	// Initialize the EC_DATA_AVAIL value
 	if (digitalRead(0)==0){
 		EC_DATA_AVAIL = TRUE;
