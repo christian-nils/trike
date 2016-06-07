@@ -116,7 +116,7 @@ void i2c_stop_cond( void )
   I2C_delay();
   set_SCL();
   started = FALSE;
-
+	printf("I2C stopped\n");
 }
 
 // Write a bit to I2C bus
