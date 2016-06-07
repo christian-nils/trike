@@ -119,7 +119,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //	StartI2CTimer();                                                // start timer2 interrupt in case i2c hangs in 'while loop' functions
    
 //    IdleI2C1();                                                     // Ensure module is idle
-    i2c_start_cond();                                          // Send start bit TO slave
+//    i2c_start_cond();                                          // Send start bit TO slave
 //    MasterWaitForIntrI2C1();                                        // Wait for Master interrupt request and then clear interrupt Flag.
 	
     switch(ucCmd)
@@ -134,7 +134,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd , ucBytes_wr, ucData_wr)<0){
 //				printf("Error in i2c writing\n");         
 //			}
-            if (i2c_write_byte(FALSE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
+            if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
             {
                 for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
                 {              
@@ -148,7 +148,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 
         case READ:
 		
-			if (i2c_write_byte(FALSE,FALSE,SLAVE_ADDR | 1)==ACK)                               // check for ACK from slave
+			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR | 1)==ACK)                               // check for ACK from slave
 				{
 					gets_I2C(ucData_rd, usBytes_rd, bAdjust);                             
 				}
