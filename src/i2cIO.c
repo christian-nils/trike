@@ -169,7 +169,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //			}
 ////			while(digitalRead(0) == 1);
 //            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
-			if (i2c_write_byte(FALSE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
+			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
             {
                 for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
                 {              
