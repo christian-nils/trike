@@ -15,14 +15,13 @@ void init_I2C(void){
 //	wiringPiSetup();
 	pinMode(SCLPIN, OUTPUT);
 	pinMode(SDAPIN, OUTPUT);
-	pullUpDnControl(SCLPIN, PUD_UP);
-	pullUpDnControl(SDAPIN, PUD_UP);
 	set_SCL();
 	set_SDA();
 }
 
 BOOL read_SCL(void){
 	pinMode(SCLPIN, INPUT);
+	pullUpDnControl(SCLPIN, PUD_UP);
 	if (digitalRead(SCLPIN)){
 		pinMode(SCLPIN, OUTPUT);
 		return TRUE;
@@ -40,8 +39,11 @@ void clear_SCL( void ){ // Actively drive SCL signal low
 	digitalWrite(SCLPIN, LOW);
 }
 
+void set_SDA_input(void){
+	pinMode(SDAPIN, INPUT);	
+	pullUpDnControl(SDAPIN, PUD_UP);
+}
 BOOL read_SDA(void){
-	pinMode(SDAPIN, INPUT);
 	if (digitalRead(SDAPIN)){
 		pinMode(SDAPIN, OUTPUT);
 		return TRUE;
@@ -163,7 +165,7 @@ BOOL i2c_read_bit( void )
   BOOL bit;
 
   // Let the slave drive data
-  clear_SDA();
+  set_SDA_input();
 
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
