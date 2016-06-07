@@ -17,6 +17,8 @@ void init_I2C(void){
 	pinMode(SDAPIN, OUTPUT);
 	pullUpDnControl(SCLPIN, PUD_UP);
 	pullUpDnControl(SDAPIN, PUD_UP);
+	set_SCL();
+	set_SDA();
 }
 
 BOOL read_SCL(void){
