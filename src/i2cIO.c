@@ -112,6 +112,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 {        
 //	UINT32 ret;
 	int i;
+	BOOL ack;
 //	UINT8 cmd;
     if (ucBytes_wr > BUF_150)                                       // sanity check for maximum buffer size
         return I2C_BUF_OVRFLO;                                      // return i2c buffer overflow error code to calling routine
@@ -134,7 +135,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //			if(i2c_smbus_write_i2c_block_data(SLAVE_FD, cmd , ucBytes_wr, ucData_wr)<0){
 //				printf("Error in i2c writing\n");         
 //			}
-            if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
+            if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR))                               // check for ACK from slave
             {
                 for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
                 {              
@@ -169,25 +170,26 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
 //			}
 ////			while(digitalRead(0) == 1);
 //            gets_I2C(ucData_rd, usBytes_rd, bAdjust);              // Read in multiple bytes
-//			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR)==ACK)                               // check for ACK from slave
-//            {
-				i2c_write_byte(TRUE,FALSE,SLAVE_ADDR);
+			if (ack = i2c_write_byte(TRUE,FALSE,SLAVE_ADDR))                               // check for ACK from slave
+            {
+//				i2c_write_byte(TRUE,FALSE,SLAVE_ADDR);
                 for(i = 0; i < ucBytes_wr; i++)                     // Begin a loop writing the tx bytes to the slave
                 {              
 					i2c_write_byte(FALSE, FALSE, ucData_wr[i]); 
                 }
-//            }            
-//            else
-//                i2cIO_error(NOT_ACK);                              //ACK error (does not return)	   
-                                   
-			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR | 1)==ACK)   // check for ACK from slave
-				{
-					gets_I2C(ucData_rd, usBytes_rd, bAdjust);                             
-				}
+            }            
             else
-                i2cIO_error(NOT_ACK);                               //ACK error (does not return)
-						
-            break;
+                i2cIO_error(NOT_ACK);                              //ACK error (does not return)	   
+                       
+printf("%d\n", ack);           
+//			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR | 1)==ACK)   // check for ACK from slave
+//				{
+//					gets_I2C(ucData_rd, usBytes_rd, bAdjust);                             
+//				}
+//            else
+//                i2cIO_error(NOT_ACK);                               //ACK error (does not return)
+//						
+//            break;
     }
 
 	i2c_stop_cond();
