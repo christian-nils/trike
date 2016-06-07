@@ -21,7 +21,7 @@ void init_I2C(void){
 
 BOOL read_SCL(void){
 	pinMode(SCLPIN, INPUT);
-	pullUpDnControl(SCLPIN, PUD_UP);
+	pullUpDnControl(SCLPIN, PUD_DOWN);
 	if (digitalRead(SCLPIN)){
 		pinMode(SCLPIN, OUTPUT);
 		return TRUE;
@@ -41,7 +41,7 @@ void clear_SCL( void ){ // Actively drive SCL signal low
 
 BOOL read_SDA(void){
 	pinMode(SDAPIN, INPUT);	
-	pullUpDnControl(SDAPIN, PUD_UP);
+	pullUpDnControl(SDAPIN, PUD_DOWN);
 	if (digitalRead(SDAPIN)){
 		pinMode(SDAPIN, OUTPUT);
 		return TRUE;
