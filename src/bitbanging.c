@@ -9,7 +9,6 @@
 //void clear_SDA( void ); // Actively drive SDA signal low
 ////void arbitration_lost( void ); not needed when only one device
 
-class i2c_read_bit;
 BOOL started = FALSE; // global data
 
 void init_I2C(void){
