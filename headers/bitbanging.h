@@ -1,4 +1,4 @@
-#define I2CSPEED 100
+#define I2CSPEED 400
 #define SCLPIN 9
 #define SDAPIN 8
 #define ACK 0
