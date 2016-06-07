@@ -11,7 +11,6 @@ void clear_SCL( void );
 BOOL read_SDA(void);
 void set_SDA( void );
 void clear_SDA( void );
-void set_SDA_input(void);
 void i2c_start_cond( void ) ;
 void i2c_stop_cond( void );
 void i2c_write_bit(BOOL bit) ;

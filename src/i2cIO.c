@@ -181,7 +181,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
             else
                 i2cIO_error(NOT_ACK);                              //ACK error (does not return)	   
                        
-printf("%d\n", ack);           
+			printf("%d\n", ack);           
 //			if (i2c_write_byte(TRUE,FALSE,SLAVE_ADDR | 1)==ACK)   // check for ACK from slave
 //				{
 //					gets_I2C(ucData_rd, usBytes_rd, bAdjust);                             
