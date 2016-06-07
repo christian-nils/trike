@@ -9,6 +9,7 @@
 //void clear_SDA( void ); // Actively drive SDA signal low
 ////void arbitration_lost( void ); not needed when only one device
 
+class i2c_read_bit;
 BOOL started = FALSE; // global data
 
 void init_I2C(void){
@@ -163,7 +164,7 @@ BOOL i2c_read_bit( void )
   BOOL bit;
 
   // Let the slave drive data
-  set_SDA();
+  clear_SDA();
 
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
