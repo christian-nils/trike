@@ -39,10 +39,6 @@ void clear_SCL( void ){ // Actively drive SCL signal low
 	digitalWrite(SCLPIN, LOW);
 }
 
-void set_SDA_input(void){
-	pinMode(SDAPIN, INPUT);	
-	pullUpDnControl(SDAPIN, PUD_UP);
-}
 BOOL read_SDA(void){
 	pinMode(SDAPIN, INPUT);	
 	pullUpDnControl(SDAPIN, PUD_UP);
@@ -167,7 +163,7 @@ BOOL i2c_read_bit( void )
   BOOL bit;
 
   // Let the slave drive data
-	clear_SDA();
+  set_SDA();
 
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
