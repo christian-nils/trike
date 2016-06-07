@@ -143,6 +143,7 @@ void i2c_write_bit( BOOL bit )
   while( read_SCL() == 0 ) 
   { // Clock stretching
     // You should add timeout to this loop
+	printf("Clock stretching\n");
   }
 
   // SCL is high, now data is valid
