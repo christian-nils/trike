@@ -76,7 +76,7 @@ void i2c_start_cond( void )
     set_SDA();
     I2C_delay();
 
-    while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
+    while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT) 
     {  // Clock stretching
       // You should add timeout to this loop
 	  printf("Clock stretching (start cond)\n");
@@ -111,7 +111,7 @@ void i2c_stop_cond( void )
   I2C_delay();
 
   // Clock stretching
-  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
+  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT) 
   {
     // add timeout to this loop.
 	printf("Clock stretching (stop cond)\n");
@@ -161,7 +161,7 @@ void i2c_write_bit( BOOL bit )
   // Wait for SDA value to be read by slave, minimum of 4us for standard mode
   I2C_delay();
 
-  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
+  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT) 
   { // Clock stretching
     // You should add timeout to this loop
 	printf("Clock stretching (write bit)\n");
@@ -196,7 +196,7 @@ BOOL i2c_read_bit( void )
   // Set SCL high to indicate a new valid SDA value is available
   set_SCL();
 
-  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10)
+  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT)
   { // Clock stretching    
 	printf("Clock stretching (read bit)\n");
 		tp = clock();
@@ -296,7 +296,7 @@ UINT8 i2c_get_address(void)
 					} else {
 						printf("no... ");
 					}
-					while (dPOR_TIMER < I2C_POR_TIMEOUT/10) {
+					while (dPOR_TIMER < I2C_POR_TIMEOUT) {
 							tp = clock();
 							dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
 					}
