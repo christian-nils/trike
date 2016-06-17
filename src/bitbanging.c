@@ -67,6 +67,8 @@ void clear_SDA( void ){ // Actively drive SDA signal low
 
 void i2c_start_cond( void ) 
 {
+	UINT32 dPOR_TIMER = 0;
+	clock_t tp;
   if( started ) 
   { 
     // if started, do a restart cond
@@ -74,9 +76,12 @@ void i2c_start_cond( void )
     set_SDA();
     I2C_delay();
 
-    while( read_SCL() == 0 ) 
+    while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
     {  // Clock stretching
       // You should add timeout to this loop
+	  		printf("Clock stretching\n");
+	tp = clock();
+	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
     }
 
     // Repeated start setup time, minimum 4.7us
@@ -99,14 +104,19 @@ void i2c_start_cond( void )
 
 void i2c_stop_cond( void )
 {
+	UINT32 dPOR_TIMER = 0;
+	clock_t tp;
   // set SDA to 0
   clear_SDA();
   I2C_delay();
 
   // Clock stretching
-  while( read_SCL() == 0 ) 
+  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   {
     // add timeout to this loop.
+		printf("Clock stretching\n");
+	tp = clock();
+	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
 
   // Stop bit setup time, minimum 4us
