@@ -173,7 +173,7 @@ BOOL i2c_read_bit( void )
   // Let the slave drive data
 //  set_SDA();
   pinMode(SDAPIN, INPUT);
-  
+  pullUpDnControl(SDAPIN, PUD_UP);
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
 
