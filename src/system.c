@@ -14,7 +14,7 @@ void sys_init(void){
 //	i2c_get_address();
 	Reset_init();
 	Wake_init();	//Initialize the wake and reset signal	
-//	Wake_signal();
+	Wake_signal();
 //	
 	interrupts_init(); // set up all the interrupts
 	delay(5000);
