@@ -151,15 +151,12 @@ void i2c_write_bit( BOOL bit )
   // Wait for SDA value to be read by slave, minimum of 4us for standard mode
   I2C_delay();
 
-  while( read_SCL() == 0 ) 
+  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT) 
   { // Clock stretching
     // You should add timeout to this loop
 	printf("Clock stretching\n");
-	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
-		tp = clock();
-		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
- 	}
-	return;
+	tp = clock();
+	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
 
   // SCL is high, now data is valid
