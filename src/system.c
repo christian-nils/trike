@@ -13,7 +13,7 @@ void sys_init(void){
 	init_I2C();
 	printf("%f\n", i2c_write_byte(TRUE,TRUE,SLAVE_ADDR<<1));
 //	i2c_get_address();
-	Reset_init();
+//	Reset_init();
 	Wake_init();	//Initialize the wake and reset signal	
 	Wake_signal();
 	
