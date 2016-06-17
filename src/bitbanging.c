@@ -71,6 +71,7 @@ void i2c_start_cond( void )
 	clock_t tp;
   if( started ) 
   { 
+	  printf("restarting...\n");
     // if started, do a restart cond
     // set SDA to 1
     set_SDA();
@@ -83,7 +84,8 @@ void i2c_start_cond( void )
 		tp = clock();
 		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
     }
-
+	
+	set_SCL();
     // Repeated start setup time, minimum 4.7us
     I2C_delay();
 
