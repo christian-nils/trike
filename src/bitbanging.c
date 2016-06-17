@@ -79,9 +79,8 @@ void i2c_start_cond( void )
     while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
     {  // Clock stretching
       // You should add timeout to this loop
-	  		printf("Clock stretching\n");
-	tp = clock();
-	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+		tp = clock();
+		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
     }
 
     // Repeated start setup time, minimum 4.7us
@@ -114,7 +113,6 @@ void i2c_stop_cond( void )
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   {
     // add timeout to this loop.
-		printf("Clock stretching\n");
 	tp = clock();
 	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
@@ -164,11 +162,9 @@ void i2c_write_bit( BOOL bit )
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   { // Clock stretching
     // You should add timeout to this loop
-	printf("Clock stretching\n");
 	tp = clock();
 	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
-	printf("out of the while loop\n");
   // SCL is high, now data is valid
   // If SDA is high, check that nobody else is driving SDA
 //  if( bit && ( read_SDA() == 0 ) )
@@ -225,20 +221,18 @@ BOOL i2c_write_byte( BOOL          send_start ,
   {
     i2c_start_cond();
   }
-	printf("Start cond written.\n");
   for( bit = 0; bit < 8; bit++ ) 
   {
     i2c_write_bit( ( byte & 0x80 ) != 0 );
     byte <<= 1;
   }
-  	printf("Byte written.\n");
   nack = i2c_read_bit();
-	printf("nack read\n");
+  
   if (send_stop) 
   {
     i2c_stop_cond();
   }
-	printf("stop cond sent\n");
+  
   return nack;
 
 }
@@ -287,11 +281,10 @@ UINT8 i2c_get_address(void)
 			/* Select detection command for this address */
 			
 				if (i+j >= 0x03 && i+j <= 0x77){
-					printf("%d\n", i+j);
-					printf("%d\n", i2c_write_byte(TRUE,TRUE,i+j | 1));
-//					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
-//						printf("%d\n", i+j);
-//					}					
+					printf("%d\n", i+j);					
+					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
+						printf("%d\n", i+j);
+					}					
 				}
 
 		}
