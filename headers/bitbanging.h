@@ -1,6 +1,7 @@
 #define I2CSPEED 3000
 #define SCLPIN 3 // pins number 
 #define SDAPIN 2
+#define INTPIN 17
 #define ACK 0
 #define NACK 1
 

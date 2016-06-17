@@ -8,7 +8,7 @@ void sys_init(void){
 	
 	POR_TIMER = clock();					//reset POR timer
 	
-	wiringPiSetupGpio(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
+	wiringPiSetupGpio(); //initialize wiringPi, using GPIO pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	
 	init_I2C();
 //	i2c_get_address();

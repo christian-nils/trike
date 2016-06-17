@@ -85,7 +85,7 @@ UINT8 VREG_init()
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
 	
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
-	if (digitalRead(0) == 0)	//0 is the pin number
+	if (digitalRead(INTPIN) == 0)	//INTPIN is the interrupt pin number
 	{	
 		printf("there is data\n");															// if this signal is LOW (ASSERTED) to start, then issue a HID_READ command to try and clear it (MM7150 finish sensor reading that was interrupted by POR)
 		ucRet = i2c_cmd_WrRd (READ,                                 // Read the data from the SSC7150
