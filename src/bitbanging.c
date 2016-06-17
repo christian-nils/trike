@@ -16,8 +16,6 @@ void init_I2C(void){
 	UINT32 dPOR_TIMER = 0;
 	clock_t tp;
 	
-	pullUpDnControl(SCLPIN, PUD_UP);
-	pullUpDnControl(SDAPIN, PUD_UP);
 	pinMode(SCLPIN, OUTPUT);
 	pinMode(SDAPIN, OUTPUT);
 	set_SCL();
@@ -288,7 +286,7 @@ UINT8 i2c_get_address(void)
 			/* Select detection command for this address */				
 				if (i+j >= 0x03 && i+j <= 0x77){	
 					printf("%02x: ", i+j);	
-					if (i2c_write_byte(TRUE,TRUE,i+j & 0)==ACK){
+					if (i2c_write_byte(TRUE,TRUE,i+j)==ACK){
 						printf("YES! ");
 					} else {
 						printf("no... ");
