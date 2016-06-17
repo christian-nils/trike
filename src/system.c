@@ -13,9 +13,9 @@ void sys_init(void){
 	init_I2C();
 //	printf("%d\n", i2c_write_byte(TRUE,FALSE,SLAVE_ADDR<<1));
 //	i2c_get_address();
-	Reset_init();
-	Wake_init();	//Initialize the wake and reset signal	
-	Wake_signal();
+//	Reset_init();
+//	Wake_init();	//Initialize the wake and reset signal	
+//	Wake_signal();
 //	
 //	interrupts_init(); // set up all the interrupts
 
