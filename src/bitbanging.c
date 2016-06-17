@@ -193,7 +193,7 @@ BOOL i2c_read_bit( void )
   I2C_delay();
 
   // Set SCL high to indicate a new valid SDA value is available
-  set_SCL();
+  pinMode(SCLPIN, INPUT);
 
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10)
   { // Clock stretching    
