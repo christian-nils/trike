@@ -288,7 +288,7 @@ UINT8 i2c_get_address(void)
 			/* Select detection command for this address */				
 				if (i+j >= 0x03 && i+j <= 0x77){	
 					printf("%02x: ", i+j);	
-					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
+					if (i2c_write_byte(TRUE,TRUE,i+j & 0)==ACK){
 						printf("YES! ");
 					} else {
 						printf("no... ");
