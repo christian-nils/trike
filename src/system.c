@@ -11,7 +11,7 @@ void sys_init(void){
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	
 	init_I2C();
-	i2c_get_address();
+//	i2c_get_address();
 	Reset_init();
 	Wake_init();	//Initialize the wake and reset signal	
 	Wake_signal();
