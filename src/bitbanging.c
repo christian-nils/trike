@@ -183,7 +183,7 @@ BOOL i2c_read_bit( void )
   // Let the slave drive data
 //  set_SDA();
   pinMode(SDAPIN, INPUT);
-  pullUpDnControl(SDAPIN, PUD_UP);
+//  pullUpDnControl(SDAPIN, PUD_UP);
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
 
@@ -281,7 +281,7 @@ UINT8 i2c_get_address(void)
 			
 				if (i+j >= 0x03 && i+j <= 0x77){		
 					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
-						printf("%d\n", i+j);
+						printf("%02x: ", i+j);
 					}					
 				}
 
