@@ -82,15 +82,8 @@ UINT8 VREG_init()
     UINT8 ucSensor_num;
     UINT8 ucRet = FALSE;
     UINT8 ucRx_data[BUF_40];
-	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
 	
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
-    
-	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
-		tp = clock();
-		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
- 	}
 	
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 
 	if (digitalRead(0) == 0)	//0 is the pin number

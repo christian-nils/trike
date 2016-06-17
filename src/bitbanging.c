@@ -12,11 +12,19 @@
 BOOL started = FALSE; // global data
 
 void init_I2C(void){
-//	wiringPiSetup();
+	
+	UINT32 dPOR_TIMER = 0;
+	clock_t tp;
+	
 	pinMode(SCLPIN, OUTPUT);
 	pinMode(SDAPIN, OUTPUT);
 	set_SCL();
 	set_SDA();
+	
+	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
+		tp = clock();
+		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+ 	}
 }
 
 BOOL read_SCL(void){
@@ -262,8 +270,9 @@ UINT8 i2c_get_address(void)
 //		printf("%02x: ", i);
 		for(j = 0; j < 16; j++) {
 			/* Select detection command for this address */
-			printf("%d\n", i+j);
+			
 				if (i+j >= 0x03 && i+j <= 0x77){
+					printf("%d\n", i+j);
 					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
 						printf("%d\n", i+j);
 					}					
