@@ -86,6 +86,7 @@ int main(void)
     char err_buf[32];
 
 	sys_init();
+	printf("%d\n", i2c_write_byte(TRUE,TRUE,SLAVE_ADDR<<1));
 	ucRetStat = VREG_init();
 //	error_handler("Vini",0,ucRetStat);
 
