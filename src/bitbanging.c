@@ -80,7 +80,6 @@ void i2c_start_cond( void )
     while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
     {  // Clock stretching
       // You should add timeout to this loop
-	  printf("Clock stretching (start cond)\n");
 		tp = clock();
 		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
     }
@@ -116,7 +115,6 @@ void i2c_stop_cond( void )
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   {
     // add timeout to this loop.
-	printf("Clock stretching (stop cond)\n");
 	tp = clock();
 	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
@@ -166,7 +164,6 @@ void i2c_write_bit( BOOL bit )
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   { // Clock stretching
     // You should add timeout to this loop
-	printf("Clock stretching (write bit)\n");
 	tp = clock();
 	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
@@ -200,7 +197,6 @@ BOOL i2c_read_bit( void )
 
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10)
   { // Clock stretching    
-	printf("Clock stretching (read bit)\n");
 		tp = clock();
 		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
