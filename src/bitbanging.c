@@ -203,7 +203,7 @@ BOOL i2c_read_bit( void )
   I2C_delay();
 
   // SCL is high, read out bit
-	bit = digitalRead(SDAPIN)
+	bit = digitalRead(SDAPIN);
 	pinMode(SDAPIN, OUTPUT);
 	
   // Set SCL low in preparation for next operation
