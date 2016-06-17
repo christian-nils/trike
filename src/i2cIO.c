@@ -141,8 +141,7 @@ UINT8 i2c_cmd_WrRd(UINT8 ucCmd, UINT8 ucBytes_wr,  UINT8 *ucData_wr, UINT16 usBy
                 {              
 					i2c_write_byte(FALSE, FALSE, ucData_wr[i]); 
                 }
-            }
-            
+            }            
             else
                 i2cIO_error(NOT_ACK);                              //ACK error (does not return)	   
             break;

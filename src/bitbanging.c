@@ -71,7 +71,6 @@ void i2c_start_cond( void )
 	clock_t tp;
   if( started ) 
   { 
-	  printf("restarting...\n");
     // if started, do a restart cond
     // set SDA to 1
     set_SDA();
