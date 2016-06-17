@@ -11,13 +11,13 @@ void sys_init(void){
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	
 	init_I2C();
-	printf("%f\n", i2c_write_byte(TRUE,FALSE,SLAVE_ADDR<<1));
+//	printf("%d\n", i2c_write_byte(TRUE,FALSE,SLAVE_ADDR<<1));
 //	i2c_get_address();
-	Reset_init();
-	Wake_init();	//Initialize the wake and reset signal	
-	Wake_signal();
-	
-	interrupts_init(); // set up all the interrupts
+//	Reset_init();
+//	Wake_init();	//Initialize the wake and reset signal	
+//	Wake_signal();
+//	
+//	interrupts_init(); // set up all the interrupts
 
 //	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 //	printf("IMU set up , FID: %i\n", SLAVE_FD);
