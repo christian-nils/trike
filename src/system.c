@@ -17,10 +17,10 @@ void sys_init(void){
 //	Wake_signal();
 //	
 	interrupts_init(); // set up all the interrupts
-
+	delay(5000);
 //	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 //	printf("IMU set up , FID: %i\n", SLAVE_FD);
-
+	
 	return SUCCESS;
 }
 
@@ -33,8 +33,8 @@ void Reset_init()
 {
     // configure pin where the wake signal is connected
 	pinMode(RESPIN, OUTPUT); //Set the GPIO pin 2 to OUTPUT
-//	digitalWrite(3, 0); //set the signal to LOW
-//	delay(2);
+	digitalWrite(RESPIN, 0); //set the signal to LOW
+	delay(2); //hold the reset for 2ms
 	digitalWrite(RESPIN, 1) ; //set the signal to HIGH 
 }
 
@@ -47,7 +47,7 @@ void Wake_init()
 {
     // configure pin where the wake signal is connected
 	pinMode(WAKPIN, OUTPUT); //Set the GPIO pin 2 to OUTPUT
-	digitalWrite(WAKPIN, 0) ; //set the signal to HIGH
+	digitalWrite(WAKPIN, 1) ; //set the signal to HIGH
 }
 
 /** Wake_signal
@@ -58,9 +58,9 @@ void Wake_init()
 void Wake_signal()
 {
 
-	digitalWrite(2, 0) ; //set the signal to LOW                                            //assert wake signal
+	digitalWrite(WAKPIN, 0) ; //set the signal to LOW                                            //assert wake signal
     delay(2);                                                       //spec says 3µs assertion, let's use ms delay and wait ~2 ms
-    digitalWrite(2, 1) ; //set the signal to HIGH                                             //de-assert wake signal
+    digitalWrite(WAKPIN, 1) ; //set the signal to HIGH                                             //de-assert wake signal
 
 }
 
