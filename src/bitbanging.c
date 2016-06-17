@@ -259,10 +259,10 @@ UINT8 i2c_get_address(void)
 	int i, j;
 	
 	for (i = 0; i < 128; i += 16) {
-		printf("%02x: ", i);
+//		printf("%02x: ", i);
 		for(j = 0; j < 16; j++) {
 			/* Select detection command for this address */
-
+			printf("%d\n", i+j);
 				if (i+j >= 0x03 && i+j <= 0x77){
 					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
 						printf("%d\n", i+j);
