@@ -269,4 +269,6 @@ UINT8 i2c_get_address(void)
 					}					
 				}
 
+		}
+	}
 }
