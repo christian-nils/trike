@@ -8,7 +8,7 @@
 //void set_SDA( void ); // Actively drive SDA signal high
 //void clear_SDA( void ); // Actively drive SDA signal low
 ////void arbitration_lost( void ); not needed when only one device
-
+extern clock_t POR_TIMER;											// amount of elapsed time (in ms) since POR 
 BOOL started = FALSE; // global data
 
 void init_I2C(void){
