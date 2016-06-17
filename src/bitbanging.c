@@ -151,14 +151,14 @@ void i2c_write_bit( BOOL bit )
   // Wait for SDA value to be read by slave, minimum of 4us for standard mode
   I2C_delay();
 
-  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT) 
+  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   { // Clock stretching
     // You should add timeout to this loop
 	printf("Clock stretching\n");
 	tp = clock();
 	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
-
+	printf("out of the while loop\n");
   // SCL is high, now data is valid
   // If SDA is high, check that nobody else is driving SDA
 //  if( bit && ( read_SDA() == 0 ) )
