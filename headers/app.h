@@ -71,13 +71,12 @@ typedef unsigned long UINT32;
 #define FALSE 0
 
 //  Peripheral Include Files
-#include "bitbanging.h"
 #include "vregs.h"
 #include "sf.h"
 #include "err.h"
 #include "i2cIO.h"
 #include "system.h"
-
+#include "bitbanging.h"
 
 //****************************************************************************
 //****************************************************************************

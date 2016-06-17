@@ -194,10 +194,10 @@ BOOL i2c_read_bit( void )
   // Set SCL high to indicate a new valid SDA value is available
   set_SCL();
 
-  while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10)
+  while( read_SCL() == 0)
   { // Clock stretching    
-		tp = clock();
-		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+//		tp = clock();
+//		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
   }
 
   // Wait for SDA value to be read by slave, minimum of 4us for standard mode
