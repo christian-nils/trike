@@ -277,16 +277,25 @@ void I2C_delay( void )
 UINT8 i2c_get_address(void)
 {
 	int i, j;
+	UINT32 dPOR_TIMER = 0;
+	clock_t tp;
 	
 	for (i = 0; i < 128; i += 16) {
 //		printf("%02x: ", i);
 		for(j = 0; j < 16; j++) {
 			/* Select detection command for this address */
-			
+				printf("%02x: ", i+j);
 				if (i+j >= 0x03 && i+j <= 0x77){		
 					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
-						printf("%02x: ", i+j);
-					}					
+						printf("YES!\n");
+					} else {
+						printf("no...\n");
+					}
+					while (dPOR_TIMER < I2C_POR_TIMEOUT/10) {
+							tp = clock();
+							dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+						}
+					}
 				}
 
 		}
