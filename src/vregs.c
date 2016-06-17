@@ -81,7 +81,7 @@ UINT8 VREG_init()
     UINT8 ucSensor_num;
     UINT8 ucRet = FALSE;
     UINT8 ucRx_data[BUF_40];
-	
+	printf("%d\n", i2c_write_byte(TRUE,TRUE,SLAVE_ADDR<<1));
     memset(&VREGS, 0x00, sizeof(VREGS));                            // Initialize VREG registers 
 	
 //	if (PORTEbits.RE8 == 0)											//check initial polarity of HIDI2C_HOST_INT on RE8/INT1 

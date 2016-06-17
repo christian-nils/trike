@@ -11,6 +11,7 @@ void sys_init(void){
 	wiringPiSetup(); //initialize wiringPi, using wiringPi pin numbering (see: http://wiringpi.com/reference/setup/, https://projects.drogon.net/raspberry-pi/wiringpi/pins/) 
 	
 	init_I2C();
+	printf("%d\n", i2c_write_byte(TRUE,TRUE,SLAVE_ADDR<<1));
 //	printf("%d\n", i2c_write_byte(TRUE,FALSE,SLAVE_ADDR<<1));
 //	i2c_get_address();
 //	Reset_init();
