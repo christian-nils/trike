@@ -13,48 +13,42 @@ BOOL started = FALSE; // global data
 
 void init_I2C(void){
 //	wiringPiSetup();
-	pinMode(SCLPIN, OUTPUT);
-	pinMode(SDAPIN, OUTPUT);
+	pinMode(SCLPIN, INPUT);
+	pinMode(SDAPIN, INPUT);
 	set_SCL();
 	set_SDA();
 }
 
 BOOL read_SCL(void){
-	pinMode(SCLPIN, INPUT);
 	if (digitalRead(SCLPIN)){
-		pinMode(SCLPIN, OUTPUT);
 		return TRUE;
 	}
 	else {
-		pinMode(SCLPIN, OUTPUT);
 		return FALSE;
 	}
 }
 
-void set_SCL( void ){ // Actively drive SCL signal high
-	digitalWrite(SCLPIN, HIGH);
+void set_SCL( void ){ // Actively drive SCL signal high, change to pull-up resistor
+	pullUpDnControl (SCLPIN, PUD_UP);
 }
-void clear_SCL( void ){ // Actively drive SCL signal low
-	digitalWrite(SCLPIN, LOW);
+void clear_SCL( void ){ // Actively drive SCL signal low, change to pull-down resistor
+	pullUpDnControl (SCLPIN, PUD_DOWN);
 }
 
 BOOL read_SDA(void){
-	pinMode(SDAPIN, INPUT);	
 	if (digitalRead(SDAPIN)){
-		pinMode(SDAPIN, OUTPUT);
 		return TRUE;
 	}
 	else {
-		pinMode(SDAPIN, OUTPUT);
 		return FALSE;
 	}
 }
 
 void set_SDA( void ){ // Actively drive SDA signal high
-	digitalWrite(SDAPIN, HIGH);
+	pullUpDnControl (SDAPIN, PUD_UP);
 }
 void clear_SDA( void ){ // Actively drive SDA signal low
-	digitalWrite(SDAPIN, LOW);
+	pullUpDnControl (SDAPIN, PUD_DOWN);
 }
 
 void i2c_start_cond( void ) 
@@ -143,7 +137,6 @@ void i2c_write_bit( BOOL bit )
   while( read_SCL() == 0 ) 
   { // Clock stretching
     // You should add timeout to this loop
-	printf("Clock stretching\n");
   }
 
   // SCL is high, now data is valid
@@ -163,8 +156,7 @@ BOOL i2c_read_bit( void )
   BOOL bit;
 
   // Let the slave drive data
-//  set_SDA();
-  pinMode(SDAPIN, INPUT);
+  set_SDA();
   
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
