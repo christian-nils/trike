@@ -8,22 +8,22 @@
 //void set_SDA( void ); // Actively drive SDA signal high
 //void clear_SDA( void ); // Actively drive SDA signal low
 ////void arbitration_lost( void ); not needed when only one device
-extern clock_t POR_TIMER;											// amount of elapsed time (in ms) since POR 
 BOOL started = FALSE; // global data
 
 void init_I2C(void){
 	
 	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
+	clock_t tp, tp_origin;
 	
 	pinMode(SCLPIN, OUTPUT);
 	pinMode(SDAPIN, OUTPUT);
 	set_SCL();
 	set_SDA();
 	
+	tp_origin = clock();
 	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
 		tp = clock();
-		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+		dPOR_TIMER = (UINT32) ((tp-tp_origin)/(double)CLOCKS_PER_SEC*1000);
  	}
 }
 
@@ -68,19 +68,20 @@ void clear_SDA( void ){ // Actively drive SDA signal low
 void i2c_start_cond( void ) 
 {
 	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
+	clock_t tp, tp_origin;
   if( started ) 
   { 
     // if started, do a restart cond
     // set SDA to 1
     set_SDA();
     I2C_delay();
-
+	
+	tp_origin = clock();
     while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
     {  // Clock stretching
       // You should add timeout to this loop
 		tp = clock();
-		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+		dPOR_TIMER = (UINT32) ((tp-tp_origin)/(double)CLOCKS_PER_SEC*1000);
     }
 	
 	set_SCL();
@@ -105,17 +106,18 @@ void i2c_start_cond( void )
 void i2c_stop_cond( void )
 {
 	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
+	clock_t tp,tp_origin;
   // set SDA to 0
   clear_SDA();
   I2C_delay();
 
   // Clock stretching
+  tp_origin = clock();
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   {
     // add timeout to this loop.
 	tp = clock();
-	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+	dPOR_TIMER = (UINT32) ((tp-tp_origin)/(double)CLOCKS_PER_SEC*1000);
   }
 
 	set_SCL();
@@ -140,7 +142,7 @@ void i2c_stop_cond( void )
 void i2c_write_bit( BOOL bit ) 
 {
 	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
+	clock_t tp, tp_origin;
 	
   if( bit ) 
   {
@@ -159,12 +161,13 @@ void i2c_write_bit( BOOL bit )
 
   // Wait for SDA value to be read by slave, minimum of 4us for standard mode
   I2C_delay();
-
+  
+	tp_origin = clock();
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10) 
   { // Clock stretching
     // You should add timeout to this loop
 	tp = clock();
-	dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+	dPOR_TIMER = (UINT32) ((tp-tp_origin)/(double)CLOCKS_PER_SEC*1000);
   }
   // SCL is high, now data is valid
   // If SDA is high, check that nobody else is driving SDA
@@ -181,7 +184,7 @@ void i2c_write_bit( BOOL bit )
 BOOL i2c_read_bit( void ) 
 {
 	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
+	clock_t tp, tp_origin;
 	BOOL bit;
 
   // Let the slave drive data
@@ -279,7 +282,7 @@ UINT8 i2c_get_address(void)
 {
 	int i, j;
 	UINT32 dPOR_TIMER = 0;
-	clock_t tp;
+	clock_t tp, tp_origin;
 	
 	for (i = 0; i < 128; i += 16) {
 //		printf("%02x: ", i);
@@ -292,9 +295,10 @@ UINT8 i2c_get_address(void)
 					} else {
 						printf("no... ");
 					}
+					tp_origin = clock();
 					while (dPOR_TIMER < I2C_POR_TIMEOUT/10) {
 							tp = clock();
-							dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+							dPOR_TIMER = (UINT32) ((tp-tp_origin)/(double)CLOCKS_PER_SEC*1000);
 					}
 				}
 

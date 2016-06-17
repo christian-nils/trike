@@ -174,7 +174,7 @@ UINT8 hid_i2c_cmd_process(UINT8 *ucCmdDatbuf, UINT8 ucCmd_req, UINT8 ucReport_id
     switch(ucCmd_req)
     {
 		UINT32 dPOR_TIMER = 0;
-		clock_t tp;
+		clock_t tp, tp_origin;
 		
         case RESET_DEV_CMD:                                         //HID Reset command                      
             ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table                    
@@ -192,10 +192,11 @@ UINT8 hid_i2c_cmd_process(UINT8 *ucCmdDatbuf, UINT8 ucCmd_req, UINT8 ucReport_id
             
             if (ucRetStat != SUCCESS)
                 return RESET_FAIL;
-
+				
+			tp_origin = clock();
 			while (dPOR_TIMER < TIMEOUT_5SEC && !EC_DATA_AVAIL) {
 				tp = clock();
-				dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+				dPOR_TIMER = (UINT32) ((tp-tp_origin)/(double)CLOCKS_PER_SEC*1000);
 			}
            
             if (!EC_DATA_AVAIL) 
