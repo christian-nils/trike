@@ -287,9 +287,9 @@ UINT8 i2c_get_address(void)
 				printf("%02x: ", i+j);
 				if (i+j >= 0x03 && i+j <= 0x77){		
 					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
-						printf("YES!\n");
+						printf("YES! ");
 					} else {
-						printf("no...\n");
+						printf("no... ");
 					}
 					while (dPOR_TIMER < I2C_POR_TIMEOUT/10) {
 							tp = clock();
@@ -298,5 +298,6 @@ UINT8 i2c_get_address(void)
 				}
 
 		}
+		printf("\n");
 	}
 }
