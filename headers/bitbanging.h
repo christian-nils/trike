@@ -2,6 +2,8 @@
 #define SCLPIN 3 // pins number 
 #define SDAPIN 2
 #define INTPIN 17
+#define RESPIN 22
+#define WAKPIN 27
 #define ACK 0
 #define NACK 1
 

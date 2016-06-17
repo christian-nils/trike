@@ -12,11 +12,11 @@ void sys_init(void){
 	
 	init_I2C();
 //	i2c_get_address();
-//	Reset_init();
-//	Wake_init();	//Initialize the wake and reset signal	
+	Reset_init();
+	Wake_init();	//Initialize the wake and reset signal	
 //	Wake_signal();
 //	
-//	interrupts_init(); // set up all the interrupts
+	interrupts_init(); // set up all the interrupts
 
 //	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 //	printf("IMU set up , FID: %i\n", SLAVE_FD);
@@ -32,10 +32,10 @@ void sys_init(void){
 void Reset_init()
 {
     // configure pin where the wake signal is connected
-	pinMode(3, OUTPUT); //Set the GPIO pin 2 to OUTPUT
+	pinMode(RESPIN, OUTPUT); //Set the GPIO pin 2 to OUTPUT
 //	digitalWrite(3, 0); //set the signal to LOW
 //	delay(2);
-	digitalWrite(3, 1) ; //set the signal to HIGH 
+	digitalWrite(RESPIN, 1) ; //set the signal to HIGH 
 }
 
 /** Wake_init
@@ -46,8 +46,8 @@ void Reset_init()
 void Wake_init()
 {
     // configure pin where the wake signal is connected
-	pinMode(2, OUTPUT); //Set the GPIO pin 2 to OUTPUT
-	digitalWrite(2, 1) ; //set the signal to HIGH
+	pinMode(WAKPIN, OUTPUT); //Set the GPIO pin 2 to OUTPUT
+	digitalWrite(WAKPIN, 0) ; //set the signal to HIGH
 }
 
 /** Wake_signal
@@ -67,17 +67,17 @@ void Wake_signal()
 int interrupts_init(void){
 	int ret;
 	
-	pinMode(0, INPUT); //Alert line gpio is an input	
-	pullUpDnControl(0, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
+	pinMode(INTPIN, INPUT); //Alert line gpio is an input	
+	pullUpDnControl(INTPIN, PUD_UP); //Set the GPIO pin 2 to a pull-up resistor
 	// Initialize the EC_DATA_AVAIL value
-	if (digitalRead(0)==0){
+	if (digitalRead(INTPIN)==0){
 		EC_DATA_AVAIL = TRUE;
 	}
 	else {
 		EC_DATA_AVAIL = FALSE;
 	}
 	// Place here the interrupt function to switch EC_DATA_AVAIL to TRUE when data are present
-	ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt);
+	ret = wiringPiISR(INTPIN, INT_EDGE_BOTH,  &data_available_interrupt);
 	
 //	if (ret = wiringPiISR (0, INT_EDGE_BOTH,  &data_available_interrupt)) //EC_DATA_AVAIL = TRUE/FALSE; true if edge falling
 //		{printf("%f", ret);
