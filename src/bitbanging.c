@@ -294,7 +294,6 @@ UINT8 i2c_get_address(void)
 					while (dPOR_TIMER < I2C_POR_TIMEOUT/10) {
 							tp = clock();
 							dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
-						}
 					}
 				}
 
