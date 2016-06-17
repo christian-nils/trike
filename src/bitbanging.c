@@ -278,9 +278,10 @@ UINT8 i2c_get_address(void)
 			
 				if (i+j >= 0x03 && i+j <= 0x77){
 					printf("%d\n", i+j);
-					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
-						printf("%d\n", i+j);
-					}					
+					printf("%d\n", i2c_write_byte(TRUE,TRUE,i+j | 1));
+//					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
+//						printf("%d\n", i+j);
+//					}					
 				}
 
 		}
