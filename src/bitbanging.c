@@ -215,20 +215,20 @@ BOOL i2c_write_byte( BOOL          send_start ,
   {
     i2c_start_cond();
   }
-
+	printf("Start cond written.\n");
   for( bit = 0; bit < 8; bit++ ) 
   {
     i2c_write_bit( ( byte & 0x80 ) != 0 );
     byte <<= 1;
   }
-  
+  	printf("Byte written.\n");
   nack = i2c_read_bit();
-
+	printf("nack read\n");
   if (send_stop) 
   {
     i2c_stop_cond();
   }
-
+	printf("stop cond sent\n");
   return nack;
 
 }
