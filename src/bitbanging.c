@@ -16,6 +16,8 @@ void init_I2C(void){
 	UINT32 dPOR_TIMER = 0;
 	clock_t tp;
 	
+	pullUpDnControl(SCLPIN, PUD_UP);
+	pullUpDnControl(SDAPIN, PUD_UP);
 	pinMode(SCLPIN, OUTPUT);
 	pinMode(SDAPIN, OUTPUT);
 	set_SCL();
@@ -184,8 +186,7 @@ BOOL i2c_read_bit( void )
 
   // Let the slave drive data
 //  set_SDA();
-  pinMode(SDAPIN, INPUT);
-  pullUpDnControl(SDAPIN, PUD_DOWN);
+  pinMode(SDAPIN, INPUT);  
   
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
