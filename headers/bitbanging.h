@@ -18,3 +18,4 @@ BOOL i2c_read_bit( void ) ;
 BOOL i2c_write_byte(BOOL send_start, BOOL send_stop, UINT8 byte) ;
 UINT8 i2c_read_byte(BOOL nack , BOOL send_stop) ;
 void I2C_delay( void ) ;
+UINT8 i2c_get_address(void);
