@@ -173,57 +173,50 @@ UINT8 hid_i2c_cmd_process(UINT8 *ucCmdDatbuf, UINT8 ucCmd_req, UINT8 ucReport_id
     
     switch(ucCmd_req)
     {
-        
-//        case RESET_DEV_CMD:                                         //HID Reset command                      
-//            ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table                    
-//            ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);       
-//            ucTx_data[2] = RESET_CMD_LSB;                           //HID Reset command opcode low byte              
-//            ucTx_data[3] = RESET_CMD_MSB;                           //HID Reset command opcode high byte
-//
-//            // send the reset command to SSC7150
-//            ucRetStat = i2c_cmd_WrRd (WRITE,                        //WRITE command packet to SSC7150 
-//                                CMD_LEN,                            //num of cmd bytes 
-//                                ucTx_data,                          //cmd buf 
-//                                0,                                  //num of bytes to read             
-//                                ucCmdDatbuf,                        //recv buf
-//                                FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
-//            
-//            if (ucRetStat != SUCCESS)
-//                return RESET_FAIL;
-//
-//            TIMER_1MS_FLG = 0;                                      // Prepare timer1 for counting
-//            usTimeout = TIMEOUT_5SEC;                               // 5 sec (as per HID spec) timeout for reset command 
-//            while (usTimeout)                                       // wait up to API spec timeout to respond with EC_DATA avail interrupt   
-//            {    
-//                if (EC_DATA_AVAIL)                                  // EC interrupt asserted (data is available)
-//                    break; 
-//					
-//                if (TIMER_1MS_FLG)
-//                { 
-//                    TIMER_1MS_FLG = 0;
-//                    usTimeout--;                                    // 1 msec expired, reduce counter
-//                }
-//            }
-//
-//            if (!usTimeout) 
-//                return RESET_FAIL;                                  // timeout occured without device responding with interrupt
-//                
-//            ucRetStat = i2c_cmd_WrRd (READ,                         // EC_DATA_AVAIL flag was set indicating SSC7150 has data available to be read in response to the RESET CMD
-//                                    0,                              //num of cmd bytes
-//                                    ucTx_data,                      //cmd buf
-//                                    2,                              //num of bytes to read
-//                                    ucCmdDatbuf,                    //recv buf 
-//                                    FALSE);                         //flag indicating that we specified the number of bytes to read explicitly
-//                
-//            if (ucRetStat != SUCCESS)
-//                return RESET_FAIL; 
-//            
-//            if (ucCmdDatbuf[0] != 0 && ucCmdDatbuf[1] != 0)         // expect 1st two bytes of data packet from SSC7150 in response to RESET command to be "00 00"
-//                return RESET_FAIL;                                  // invalid data found
-// 
-//            VREGS.SHC.reset = VREG_RESET_SUCCESS;                   // Clear the reset VREG to indicate successful 
-//                   
-//            break;
+		UINT32 dPOR_TIMER = 0;
+		clock_t tp;
+		
+        case RESET_DEV_CMD:                                         //HID Reset command                      
+            ucTx_data[0] = HID_FIELD.wCmdReg;                       //command field bytes from HID config table                    
+            ucTx_data[1] = (HID_FIELD.wCmdReg >> BYTE_SHIFT);       
+            ucTx_data[2] = RESET_CMD_LSB;                           //HID Reset command opcode low byte              
+            ucTx_data[3] = RESET_CMD_MSB;                           //HID Reset command opcode high byte
+
+            // send the reset command to SSC7150
+            ucRetStat = i2c_cmd_WrRd (WRITE,                        //WRITE command packet to SSC7150 
+                                CMD_LEN,                            //num of cmd bytes 
+                                ucTx_data,                          //cmd buf 
+                                0,                                  //num of bytes to read             
+                                ucCmdDatbuf,                        //recv buf
+                                FALSE);                             //flag indicating that we specified the number of bytes to read explicitly
+            
+            if (ucRetStat != SUCCESS)
+                return RESET_FAIL;
+
+			while (dPOR_TIMER < TIMEOUT_5SEC && !EC_DATA_AVAIL) {
+				tp = clock();
+				dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+			}
+           
+            if (!EC_DATA_AVAIL) 
+                return RESET_FAIL;                                  // timeout occured without device responding with interrupt
+                
+            ucRetStat = i2c_cmd_WrRd (READ,                         // EC_DATA_AVAIL flag was set indicating SSC7150 has data available to be read in response to the RESET CMD
+                                    0,                              //num of cmd bytes
+                                    ucTx_data,                      //cmd buf
+                                    2,                              //num of bytes to read
+                                    ucCmdDatbuf,                    //recv buf 
+                                    FALSE);                         //flag indicating that we specified the number of bytes to read explicitly
+                
+            if (ucRetStat != SUCCESS)
+                return RESET_FAIL; 
+            
+            if (ucCmdDatbuf[0] != 0 && ucCmdDatbuf[1] != 0)         // expect 1st two bytes of data packet from SSC7150 in response to RESET command to be "00 00"
+                return RESET_FAIL;                                  // invalid data found
+ 
+            VREGS.SHC.reset = VREG_RESET_SUCCESS;                   // Clear the reset VREG to indicate successful 
+                   
+            break;
 
 
         case POWER_ON:      
