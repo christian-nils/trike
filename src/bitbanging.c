@@ -186,14 +186,14 @@ BOOL i2c_read_bit( void )
 	BOOL bit;
 
   // Let the slave drive data
-//  set_SDA();
-  pinMode(SDAPIN, INPUT);  
+  set_SDA();
+//  pinMode(SDAPIN, INPUT);  
   
   // Wait for SDA value to be written by slave, minimum of 4us for standard mode
   I2C_delay();
 
   // Set SCL high to indicate a new valid SDA value is available
-  pinMode(SCLPIN, INPUT);
+  set_SCL();
 
   while( read_SCL() == 0 && dPOR_TIMER < I2C_POR_TIMEOUT/10)
   { // Clock stretching    
@@ -205,8 +205,7 @@ BOOL i2c_read_bit( void )
   I2C_delay();
 
   // SCL is high, read out bit
-	bit = digitalRead(SDAPIN);
-	pinMode(SDAPIN, OUTPUT);
+	bit = read_SDA();
 	
   // Set SCL low in preparation for next operation
   clear_SCL();
