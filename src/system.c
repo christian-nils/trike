@@ -14,10 +14,10 @@ void sys_init(void){
 	printf("%f\n", i2c_write_byte(TRUE,TRUE,SLAVE_ADDR<<1));
 //	i2c_get_address();
 //	Reset_init();
-	Wake_init();	//Initialize the wake and reset signal	
-	Wake_signal();
+//	Wake_init();	//Initialize the wake and reset signal	
+//	Wake_signal();
 	
-	interrupts_init(); // set up all the interrupts
+//	interrupts_init(); // set up all the interrupts
 
 //	SLAVE_FD = wiringPiI2CSetup(SLAVE_ADDR); // configure the i2c communication
 //	printf("IMU set up , FID: %i\n", SLAVE_FD);
