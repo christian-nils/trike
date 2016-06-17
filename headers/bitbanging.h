@@ -1,6 +1,6 @@
 #define I2CSPEED 1800
-#define SCLPIN 5 // pins number following wiringpi numbering
-#define SDAPIN 4
+#define SCLPIN 9 // pins number following wiringpi numbering
+#define SDAPIN 8
 #define ACK 0
 #define NACK 1
 
