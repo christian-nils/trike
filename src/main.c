@@ -86,8 +86,8 @@ int main(void)
     char err_buf[32];
 
 	sys_init();
-	ucRetStat = VREG_init();
-	error_handler("Vini",0,ucRetStat);
+//	ucRetStat = VREG_init();
+//	error_handler("Vini",0,ucRetStat);
 
 //    if ( (ucRetStat = VREG_init()) )                                // initialize VREG functions (NOTE: if the SF board does not initialize, end the program)
 //        error_handler("Vini",0,ucRetStat);                          // error display
