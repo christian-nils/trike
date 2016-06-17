@@ -132,7 +132,6 @@ void i2c_stop_cond( void )
   I2C_delay();
   set_SCL();
   started = FALSE;
-	printf("I2C stopped\n");
 }
 
 // Write a bit to I2C bus
@@ -280,8 +279,7 @@ UINT8 i2c_get_address(void)
 		for(j = 0; j < 16; j++) {
 			/* Select detection command for this address */
 			
-				if (i+j >= 0x03 && i+j <= 0x77){
-					printf("%d\n", i+j);					
+				if (i+j >= 0x03 && i+j <= 0x77){		
 					if (i2c_write_byte(TRUE,TRUE,i+j | 1)==ACK){
 						printf("%d\n", i+j);
 					}					
