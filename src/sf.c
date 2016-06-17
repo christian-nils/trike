@@ -88,8 +88,8 @@ int i;
     switch(ucCmd_req)
     {  
         case GET_HID_DESC:                                          //read the HID Config Descriptor from SSC7150
-            ucTx_data[1] = HID_DESC_CMD_LSB;                        // HID descriptor table request is 0x00 01
-            ucTx_data[0] = HID_DESC_CMD_MSB;
+            ucTx_data[0] = HID_DESC_CMD_LSB;                        // HID descriptor table request is 0x00 01
+            ucTx_data[1] = HID_DESC_CMD_MSB;
 
             ucRet = i2c_cmd_WrRd ( WR_RD,                           //read the HID Config Descriptor from SSC7150
                                 DESC_CMD_LEN,                       //num of cmd bytes
