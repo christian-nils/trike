@@ -130,6 +130,9 @@ void i2c_stop_cond( void )
 // Write a bit to I2C bus
 void i2c_write_bit( BOOL bit ) 
 {
+	UINT32 dPOR_TIMER = 0;
+	clock_t tp;
+	
   if( bit ) 
   {
     set_SDA();
@@ -152,6 +155,11 @@ void i2c_write_bit( BOOL bit )
   { // Clock stretching
     // You should add timeout to this loop
 	printf("Clock stretching\n");
+	while (dPOR_TIMER < I2C_POR_TIMEOUT){							//wait here for 2 seconds elapsed since POR for MM7150 i2c engine to be up and running
+		tp = clock();
+		dPOR_TIMER = (UINT32) ((tp-POR_TIMER)/(double)CLOCKS_PER_SEC*1000);
+ 	}
+	return;
   }
 
   // SCL is high, now data is valid
@@ -216,7 +224,7 @@ BOOL i2c_write_byte( BOOL          send_start ,
     i2c_write_bit( ( byte & 0x80 ) != 0 );
     byte <<= 1;
   }
-
+  
   nack = i2c_read_bit();
 
   if (send_stop) 
