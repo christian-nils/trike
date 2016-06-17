@@ -178,7 +178,9 @@ void i2c_write_bit( BOOL bit )
 // Read a bit from I2C bus
 BOOL i2c_read_bit( void ) 
 {
-  BOOL bit;
+	UINT32 dPOR_TIMER = 0;
+	clock_t tp;
+	BOOL bit;
 
   // Let the slave drive data
 //  set_SDA();
