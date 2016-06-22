@@ -180,7 +180,7 @@ static int create(int fd)
 	ev.type = UHID_CREATE;
 	strcpy((char*)ev.u.create.name, "MM7150");
 	ev.u.create.rd_data = rdesc;
-	ev.u.create.rd_size = sizeof(rdesc);
+	ev.u.create.rd_size = 3500;
 	ev.u.create.bus = BUS_I2C;
 	ev.u.create.vendor = 0x04d8;
 	ev.u.create.product = 0x0f01;
