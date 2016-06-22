@@ -48,7 +48,7 @@
 #include <linux/uhid.h>
 
 /*
- * HID Report Desciptor
+ * HID Report Descriptor
  * We emulate a basic 3 button mouse with wheel and 3 keyboard LEDs. This is
  * the report-descriptor as the kernel will parse it:
  *
@@ -458,7 +458,7 @@ int main(int argc, char **argv)
 //		}
 //	}
 
-	fprintf(stderr, "Destroy uhid device\n");
-	destroy(fd);
-	return EXIT_SUCCESS;
+//	fprintf(stderr, "Destroy uhid device\n");
+//	destroy(fd);
+//	return EXIT_SUCCESS;
 }
