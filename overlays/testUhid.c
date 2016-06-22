@@ -177,7 +177,7 @@ static int create(int fd)
 	struct uhid_event ev;
 
 	memset(&ev, 0, sizeof(ev));
-	ev.type = UHID_CREATE2;
+	ev.type = UHID_CREATE;
 	strcpy((char*)ev.u.create.name, "MM7150");
 	ev.u.create.bus = BUS_I2C;
 	ev.u.create.vendor = 0x04d8;
