@@ -14,7 +14,7 @@
 	
 	fragment@1 {
 		target = <&gpio>;
-		__overlay>> {
+		__overlay__ {
 			i2c_hid_pins: i2c_hid_pins {
 				brcm,pins = <17>;
 				brcm,function = <0>;
