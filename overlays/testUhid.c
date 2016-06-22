@@ -48,7 +48,7 @@
 #include <linux/uhid.h>
 
 /*
- * HID Report Desciptor
+ * HID Report Descriptor
  * We emulate a basic 3 button mouse with wheel and 3 keyboard LEDs. This is
  * the report-descriptor as the kernel will parse it:
  *
@@ -177,15 +177,12 @@ static int create(int fd)
 	struct uhid_event ev;
 
 	memset(&ev, 0, sizeof(ev));
-	ev.type = UHID_CREATE;
-	strcpy((char*)ev.u.create.name, "test-uhid-device");
-	ev.u.create.rd_data = rdesc;
-	ev.u.create.rd_size = sizeof(rdesc);
-	ev.u.create.bus = BUS_USB;
-	ev.u.create.vendor = 0x15d9;
-	ev.u.create.product = 0x0a37;
-	ev.u.create.version = 0;
-	ev.u.create.country = 0;
+	ev.type = UHID_CREATE2;
+	strcpy((char*)ev.u.create.name, "MM7150");
+	ev.u.create.bus = BUS_I2C;
+	ev.u.create.vendor = 0x04d8;
+	ev.u.create.product = 0x0f01;
+	ev.u.create.version = 0x7150;
 
 	return uhid_write(fd, &ev);
 }
