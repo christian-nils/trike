@@ -458,7 +458,7 @@ int main(int argc, char **argv)
 //		}
 //	}
 
-//	fprintf(stderr, "Destroy uhid device\n");
-//	destroy(fd);
-//	return EXIT_SUCCESS;
+	fprintf(stderr, "Destroy uhid device\n");
+	destroy(fd);
+	return EXIT_SUCCESS;
 }
