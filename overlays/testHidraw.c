@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	char buf[256];
 	struct hidraw_report_descriptor rpt_desc;
 	struct hidraw_devinfo info;
-	char *device = "/dev/hidraw0";
+	char *device = "/dev/uhid";
 
 	if (argc > 1)
 		device = argv[1];
