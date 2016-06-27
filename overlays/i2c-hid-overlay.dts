@@ -36,7 +36,7 @@
 				#gpio-cells = <2>;
 				#interrupt-cells = <2>;
 				interrupt-parent = <&gpio>;
-				interrupts = <17 8>;
+				interrupts = <17 2>;
 				interrupt-controller;
 				
 				status = "okay";
