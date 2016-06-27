@@ -3,7 +3,7 @@
 /plugin/;
 
 /{
-	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm, bcm2709";
+	compatible = "brcm,bcm2835", "brcm,bcm2836", "brcm,bcm2708", "brcm, bcm2709";
 
 	fragment@0 {
 		target = <&i2c_arm>;
@@ -16,7 +16,7 @@
 		target = <&gpio>;
 		__overlay__ {
 			i2c_hid_pins: i2c_hid_pins {
-				brcm,pins = <17>;
+				brcm,pins = <23>;
 				brcm,function = <0>;
 			};
 		};
@@ -36,8 +36,8 @@
 				#gpio-cells = <2>;
 				#interrupt-cells = <2>;
 				interrupt-parent = <&gpio>;
-				interrupts = <17 2>;
-				interrupt-controller;
+				interrupts = <23 0x8>;
+				/* interrupt-controller;*/
 				
 				status = "okay";
 			};
