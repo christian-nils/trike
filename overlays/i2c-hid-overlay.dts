@@ -32,8 +32,6 @@
 				compatible = "hid-over-i2c";
 				reg = <0x40>;
 				hid-descr-addr = <0x0001>;
-				pinctrl-names = "default";
-				pinctrl-0 = <&i2c_hid_pins>;
 				interrupt-parent = <&gpio>;
 				interrupts = <27 0x8>;
 			};
