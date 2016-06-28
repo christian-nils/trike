@@ -32,8 +32,12 @@
 				compatible = "hid-over-i2c";
 				reg = <0x40>;
 				hid-descr-addr = <0x0001>;
+				gpio-controller;
+				#gpio-cells = <2>;
+				#interrupt-cells = <2>;
 				interrupt-parent = <&gpio>;
 				interrupts = <23 0x8>;
+				interrupt-controller;
 				
 				status = "okay";
 			};
