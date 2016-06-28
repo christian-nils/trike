@@ -5,14 +5,14 @@
 /{
 	compatible = "brcm,bcm2835", "brcm,bcm2836", "brcm,bcm2708", "brcm,bcm2709";
 
-	fragment@0 {
+	fragment {
 		target = <&i2c_arm>;
 		__overlay__ {
 			status = "okay";
 		};
 	};
 	
-	fragment@1 {
+	fragment {
 		target = <&gpio>;
 		__overlay__ {
 			i2c_hid_pins: i2c_hid_pins {
@@ -22,7 +22,7 @@
 		};
 	};
 	
-	fragment@2 {
+	fragment {
 		target = <&i2c_arm>;
 		__overlay__{
 			#address-cells = <1>;
