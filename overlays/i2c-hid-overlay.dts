@@ -16,7 +16,7 @@
 		target = <&gpio>;
 		__overlay__ {
 			i2c_hid_pins: i2c_hid_pins {
-				brcm,pins = <23>;
+				brcm,pins = <27>;
 				brcm,function = <0>;
 			};
 		};
@@ -32,14 +32,10 @@
 				compatible = "hid-over-i2c";
 				reg = <0x40>;
 				hid-descr-addr = <0x0001>;
-				gpio-controller;
-				#gpio-cells = <2>;
-				#interrupt-cells = <2>;
+				pinctrl-names = "default";
+				pinctrl-0 = <&i2c_hid_pins>;
 				interrupt-parent = <&gpio>;
-				interrupts = <23 0x8>;
-				interrupt-controller;
-				
-				status = "okay";
+				interrupts = <27 0x8>;
 			};
 			
 		};
