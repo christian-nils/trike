@@ -3,7 +3,7 @@
 /plugin/;
 
 /{
-	compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+	compatible = "brcm,bcm2835", "brcm,bcm2836", "brcm,bcm2708", "brcm,bcm2709", "brcm,bcm2710";
 
 	fragment@0 {
 		target = <&i2c_arm>;
@@ -16,8 +16,9 @@
 		target = <&gpio>;
 		__overlay__ {
 			i2c_hid_pins: i2c_hid_pins {
-				brcm,pins = <27>;
+				brcm,pins = <5>;
 				brcm,function = <0>;
+				brcm,pull = <2>;
 			};
 		};
 	};
@@ -29,11 +30,14 @@
 			#size-cells = <0>;
 
 			i2c_hid: i2c-hid-dev@40 {
+				pinctrl-names = "default";
+				pinctrl-0 = <&i2c_hid_pins>;
+				
 				compatible = "hid-over-i2c";
 				reg = <0x40>;
 				hid-descr-addr = <0x0001>;
 				interrupt-parent = <&gpio>;
-				interrupts = <27 0x8>;
+				interrupts = <5 0x2>;
 			};
 			
 		};
