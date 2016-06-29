@@ -37,7 +37,7 @@
 				reg = <0x40>;
 				hid-descr-addr = <0x0001>;
 				interrupt-parent = <&gpio>;
-				interrupts = <5 0x2>;
+				interrupts = <5 0x8>;
 			};
 			
 		};
